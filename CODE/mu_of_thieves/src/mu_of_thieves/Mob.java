@@ -8,6 +8,6 @@ package mu_of_thieves;
  *
  * @author vruche
  */
-public class Interface {
+public class Mob {
     
 }
