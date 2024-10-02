@@ -4,10 +4,13 @@
  */
 package com.mycompany.mu_of_thieves;
 
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 /**
  *
  * @author vruche
  */
-public class Souris {
+public class Souris implements MouseListener{
     
 }
