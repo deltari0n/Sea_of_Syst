@@ -4,6 +4,8 @@
  */
 package mu_of_thieves;
 
+import java.awt.Graphics2D;
+
 /**
  *
  * @author vruche
@@ -20,4 +22,18 @@ public class Jeu {
     
     //Methodes
     
+    public void rendu(Graphics2D contexte) {
+        // 1. Rendu du décor
+        // 2. Rendu des sprites
+        // 3. Rendu des textes
+    }
+    public void miseAJour() {
+        // 1. Mise à jour de l’avatar en fonction des commandes des joueurs
+        // 2. Mise à jour des autres éléments (objets, monstres, etc.)
+        // 3. Gérer les interactions (collisions et autres règles)
+    }
+    public boolean estTermine() {
+        // Renvoie vrai si la partie est terminée (gagnée ou perdue)
+        return false;
+    }
 }

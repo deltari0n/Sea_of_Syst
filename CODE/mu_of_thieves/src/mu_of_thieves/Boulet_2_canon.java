@@ -8,6 +8,6 @@ package mu_of_thieves;
  *
  * @author vruche
  */
-public class Boulet_2_canon {
+public class Boulet_2_canon extends Entite {
     
 }

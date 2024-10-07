@@ -8,6 +8,6 @@ package mu_of_thieves;
  *
  * @author vruche
  */
-public class Joueur {
+public class Joueur extends Entite{
     
 }
