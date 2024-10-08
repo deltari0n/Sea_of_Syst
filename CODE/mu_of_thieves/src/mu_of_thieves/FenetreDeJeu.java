@@ -5,21 +5,26 @@
 package mu_of_thieves;
 
 import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.Timer;
 
 /**
  *
  * @author vruche
  */
-public class FenetreDeJeu extends JFrame {
+public class FenetreDeJeu extends JFrame implements ActionListener {
     
     private BufferedImage framebuffer;
     private Graphics2D contexte;
     private JLabel jLabel1;
-    
+    private Jeu jeu;
+    private Timer timer;
+
     public FenetreDeJeu() { 
         // initialisation de la fenetre
         this.setSize(380, 430);
@@ -34,7 +39,26 @@ public class FenetreDeJeu extends JFrame {
         this.framebuffer = new BufferedImage(this.jLabel1.getWidth(), this.jLabel1.getHeight(), BufferedImage.TYPE_INT_ARGB);
         this.jLabel1.setIcon(new ImageIcon(framebuffer));
         this.contexte = this.framebuffer.createGraphics();
+        
+        // Creation du jeu
+        this.jeu = new Jeu();
+        // Creation du Timer qui appelle this.actionPerformed() tous les 40 ms
+        this.timer = new Timer(40, this);
+        this.timer.start();
+
     }
+    
+    // Methode appelee par le timer et qui effectue la boucle de jeu
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        this.jeu.miseAJour();
+        this.jeu.rendu(contexte);
+        this.jLabel1.repaint();
+        if (this.jeu.estTermine()) {
+            this.timer.stop();
+        }
+    }
+
     
     public static void main(String[] args) {
         FenetreDeJeu fenetre = new FenetreDeJeu();

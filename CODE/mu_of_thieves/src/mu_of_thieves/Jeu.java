@@ -5,6 +5,11 @@
 package mu_of_thieves;
 
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.logging.Logger;
+import java.util.logging.Level;
+import javax.imageio.ImageIO;
 
 /**
  *
@@ -12,10 +17,16 @@ import java.awt.Graphics2D;
  */
 public class Jeu {
     //atributs
-    
+    private BufferedImage decor;
     
     //constructeurs
-    
+    public Jeu() {
+        try {
+            this.decor = ImageIO.read(getClass().getResource("/ressources/ocean.png"));
+        } catch (IOException ex) {
+            Logger.getLogger(Jeu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
     //getteurs et setteurs
     
@@ -23,7 +34,7 @@ public class Jeu {
     //Methodes
     
     public void rendu(Graphics2D contexte) {
-        // 1. Rendu du décor
+        contexte.drawImage(this.decor, 0, 0, null);
         // 2. Rendu des sprites
         // 3. Rendu des textes
     }
