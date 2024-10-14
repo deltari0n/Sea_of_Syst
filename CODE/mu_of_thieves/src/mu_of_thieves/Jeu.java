@@ -18,6 +18,7 @@ import javax.imageio.ImageIO;
 public class Jeu {
     //atributs
     private BufferedImage decor;
+    private Joueur unJoueur;
     
     //constructeurs
     public Jeu() {
@@ -26,9 +27,14 @@ public class Jeu {
         } catch (IOException ex) {
             Logger.getLogger(Jeu.class.getName()).log(Level.SEVERE, null, ex);
         }
+        this.unJoueur = new Joueur();
     }
     
     //getteurs et setteurs
+    
+    public Joueur getJoueur(){
+        return this.unJoueur;
+    }
     
     
     //Methodes
@@ -36,10 +42,12 @@ public class Jeu {
     public void rendu(Graphics2D contexte) {
         contexte.drawImage(this.decor, 0, 0, null);
         // 2. Rendu des sprites
+        this.unJoueur.rendu(contexte);
         // 3. Rendu des textes
     }
     public void miseAJour() {
         // 1. Mise à jour de l’avatar en fonction des commandes des joueurs
+        this.unJoueur.miseAJour();
         // 2. Mise à jour des autres éléments (objets, monstres, etc.)
         // 3. Gérer les interactions (collisions et autres règles)
     }
