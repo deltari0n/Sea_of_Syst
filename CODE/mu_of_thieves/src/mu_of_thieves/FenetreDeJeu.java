@@ -61,13 +61,9 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener,
     public void keyPressed(KeyEvent event) {
         if (event.getKeyCode() == event.VK_RIGHT || event.getKeyCode() == 68){ //si on appuie sur d ou flèche droite pour aller à droite
             this.jeu.getJoueur().setDroite(true);
-            System.out.println("check d");
-            //System.out.flush();
         }
         if (event.getKeyCode() == event.VK_LEFT || event.getKeyCode() == 81){ //aller a gauche
             this.jeu.getJoueur().setGauche(true);
-            System.out.println("check g");
-            //System.out.flush();
         }
         if (event.getKeyCode() == 32 || event.getKeyCode() == 90){ //sauter
             

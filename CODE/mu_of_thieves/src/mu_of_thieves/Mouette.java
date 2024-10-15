@@ -8,6 +8,6 @@ package mu_of_thieves;
  *
  * @author vruche
  */
-public class Mob extends Entite{
+public class Mouette {
     
 }
