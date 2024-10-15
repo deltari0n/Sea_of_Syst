@@ -20,26 +20,28 @@ import java.util.Random;
 public class Requin extends Entite{
     
     protected BufferedImage sprite;
-    protected double x, y, posCible;
+    protected double x, y;
+    protected int posCible;
+    private Random random;
+    private Joueur joueur;
     
-    public Requin(){
-        Random random = new Random();
+    public Requin(Joueur j){
         try {
             this.sprite = ImageIO.read(getClass().getResource("/ressources/requin.png"));
         } catch (IOException ex) {
             Logger.getLogger(Joueur.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.x = 500;
-        this.y = 300;
+        this.y = 500;
+        random = new Random();
         posCible = random.nextInt(1200); // trouver un moyen de lire directement la taille de la fenetre pour remplacer 1200
+        joueur = j;
     }
     
     public void miseAJour() {
-        Random random = new Random();
-        Joueur joueur = new Joueur();
         
-        if (joueur.getY()<70){
-            posCible = joueur.getX();
+        if (joueur.getY()>500){
+            posCible = (int) joueur.getX();
         }
         
         if (this.posCible < this.x) {
@@ -57,7 +59,8 @@ public class Requin extends Entite{
             }
         }
         if (this.posCible == this.x) {
-            posCible = random.nextInt(1200);
+            //Random random = new Random();
+            posCible = (int) random.nextInt(1200);
         } 
     }
     

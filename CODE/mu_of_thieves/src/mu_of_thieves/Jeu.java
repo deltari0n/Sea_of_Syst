@@ -29,6 +29,7 @@ public class Jeu {
             Logger.getLogger(Jeu.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.unJoueur = new Joueur();
+        this.requin = new Requin(unJoueur);
     }
     
     //getteurs et setteurs

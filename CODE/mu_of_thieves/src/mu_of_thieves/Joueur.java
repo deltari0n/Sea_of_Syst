@@ -19,7 +19,7 @@ public class Joueur extends Entite{
     
     protected BufferedImage sprite;
     protected double x, y;
-    private boolean gauche, droite;
+    private boolean gauche, droite, bas, haut;
 
     public Joueur() {
         try {
@@ -31,6 +31,8 @@ public class Joueur extends Entite{
         this.y = 300;
         this.gauche = false;
         this.droite = false;
+        this.haut = false;
+        this.bas = false;
     }
     
     public void miseAJour() {
@@ -46,6 +48,18 @@ public class Joueur extends Entite{
         if (x < 0) { // collision avec le bord gauche de la scene
             x = 0;
         }
+        if (this.bas) {
+            y += 5;
+        }
+        if (this.haut) {
+            y -= 5;
+        }
+        if (y > 700 - sprite.getWidth()) { // collision avec le bord droit de la scene
+            y = 700 - sprite.getWidth();
+        }
+        if (y < 0) { // collision avec le bord gauche de la scene
+            y = 0;
+        }
     }
     
     
@@ -59,6 +73,12 @@ public class Joueur extends Entite{
     }
     public void setDroite(boolean droite) {
         this.droite = droite;
+    }
+    public void setHaut(boolean haut) {
+        this.haut = haut;
+    }
+    public void setBas(boolean bas) {
+        this.bas = bas;
     }
     public double getX() {
         return x;

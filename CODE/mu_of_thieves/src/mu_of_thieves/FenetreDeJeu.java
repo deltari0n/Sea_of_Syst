@@ -65,6 +65,12 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener,
         if (event.getKeyCode() == event.VK_LEFT || event.getKeyCode() == 81){ //aller a gauche
             this.jeu.getJoueur().setGauche(true);
         }
+        if (event.getKeyCode() == event.VK_UP){ //aller en haut
+            this.jeu.getJoueur().setHaut(true);
+        }
+        if (event.getKeyCode() == event.VK_DOWN){ //aller en bas
+            this.jeu.getJoueur().setBas(true);
+        }
         if (event.getKeyCode() == 32 || event.getKeyCode() == 90){ //sauter
             
         }
@@ -83,7 +89,12 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener,
         }
         if (event.getKeyCode() == event.VK_LEFT  || event.getKeyCode() == 81){ //aller a gauche
             this.jeu.getJoueur().setGauche(false);
-
+        }
+        if (event.getKeyCode() == event.VK_UP){ //aller a gauche
+            this.jeu.getJoueur().setHaut(false);
+        }
+        if (event.getKeyCode() == event.VK_DOWN){ //aller a gauche
+            this.jeu.getJoueur().setBas(false);
         }
         if (event.getKeyCode() == 32 || event.getKeyCode() == 90){ //sauter
             
