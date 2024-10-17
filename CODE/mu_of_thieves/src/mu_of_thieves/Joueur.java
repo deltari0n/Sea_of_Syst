@@ -7,6 +7,7 @@ package mu_of_thieves;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 import javax.imageio.ImageIO;
@@ -20,6 +21,8 @@ public class Joueur extends Entite{
     protected BufferedImage sprite;
     protected double x, y;
     private boolean gauche, droite, bas, haut;
+    private int n;
+    private ArrayList[] listePosSaut;
 
     public Joueur() {
         try {
@@ -33,6 +36,7 @@ public class Joueur extends Entite{
         this.droite = false;
         this.haut = false;
         this.bas = false;
+        this.n = 0;
     }
     
     public void miseAJour() {
@@ -48,9 +52,11 @@ public class Joueur extends Entite{
         if (x < 0) { // collision avec le bord gauche de la scene
             x = 0;
         }
-        if (this.bas) {
+        //pour gérer la chute du joueur penser a renommer bas et haut de manière compréhensible
+        if (this.bas && !this.haut) {
             y += 5;
         }
+        //pour gérer le saut du joueur
         if (this.haut) {
             y -= 5;
         }

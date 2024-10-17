@@ -4,6 +4,8 @@
  */
 package mu_of_thieves;
 
+import java.util.Random;
+
 /**
  *
  * @author vruche
@@ -14,7 +16,11 @@ public class Mu_of_thieves {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        int posCible;
+        Random random = new Random();
+        posCible = random.nextInt(1200);
+        System.out.println(posCible);
+        
     }
     
 }

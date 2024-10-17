@@ -52,6 +52,7 @@ public class Jeu {
         // 1. Mise à jour de l’avatar en fonction des commandes des joueurs
         this.unJoueur.miseAJour();
         this.requin.miseAJour();
+        
         // 2. Mise à jour des autres éléments (objets, monstres, etc.)
         // 3. Gérer les interactions (collisions et autres règles)
     }

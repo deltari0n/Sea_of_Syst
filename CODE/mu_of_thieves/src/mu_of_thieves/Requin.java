@@ -19,15 +19,17 @@ import java.util.Random;
  */
 public class Requin extends Entite{
     
-    protected BufferedImage sprite;
+    protected BufferedImage spriteDroite,spriteGauche;
     protected double x, y;
     protected int posCible;
     private Random random;
     private Joueur joueur;
+    private Boolean vaADroite;
     
     public Requin(Joueur j){
         try {
-            this.sprite = ImageIO.read(getClass().getResource("/ressources/requin.png"));
+            this.spriteDroite = ImageIO.read(getClass().getResource("/ressources/requin_droite.png"));
+            this.spriteGauche = ImageIO.read(getClass().getResource("/ressources/requin_gauche.png"));
         } catch (IOException ex) {
             Logger.getLogger(Joueur.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -36,12 +38,14 @@ public class Requin extends Entite{
         random = new Random();
         posCible = random.nextInt(1200); // trouver un moyen de lire directement la taille de la fenetre pour remplacer 1200
         joueur = j;
+        vaADroite = posCible >= x;
     }
     
     public void miseAJour() {
         
         if (joueur.getY()>500){
             posCible = (int) joueur.getX();
+            vaADroite = posCible >= x;
         }
         
         if (this.posCible < this.x) {
@@ -61,6 +65,7 @@ public class Requin extends Entite{
         if (this.posCible == this.x) {
             //Random random = new Random();
             posCible = (int) random.nextInt(1200);
+            vaADroite = posCible >= x;
         } 
     }
     
@@ -70,7 +75,11 @@ public class Requin extends Entite{
     //guetteur et setteur
     
     public void rendu(Graphics2D contexte) {
-        contexte.drawImage(this.sprite, (int) x, (int) y, null);
+        if (vaADroite){
+            contexte.drawImage(this.spriteDroite, (int) x, (int) y, null);
+        } else{
+            contexte.drawImage(this.spriteGauche, (int) x, (int) y, null);
+        }
     }
     public double getX() {
         return x;
@@ -79,9 +88,9 @@ public class Requin extends Entite{
         return y;
     }
     public double getLargeur() {
-        return sprite.getHeight();
+        return spriteDroite.getHeight();
     }
     public double getHauteur() {
-        return sprite.getWidth();
+        return spriteDroite.getWidth();
     }
 }
