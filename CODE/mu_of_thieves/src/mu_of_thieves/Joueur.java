@@ -20,7 +20,7 @@ public class Joueur extends Entite{
     
     protected BufferedImage sprite;
     protected double x, y;
-    private boolean gauche, droite, bas, haut;
+    private boolean gauche, droite, bas, haut, clique;
     private int n;
     private ArrayList[] listePosSaut;
 
@@ -37,6 +37,7 @@ public class Joueur extends Entite{
         this.haut = false;
         this.bas = false;
         this.n = 0;
+        this.clique = false;
     }
     
     public void miseAJour() {

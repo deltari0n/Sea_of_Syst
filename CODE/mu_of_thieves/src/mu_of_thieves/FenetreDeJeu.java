@@ -108,7 +108,8 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener,
     @Override
     //MouseClicked est la méthode que vous devez compléter si vous avez une action à faire à chaque détection de clic !
     public void mouseClicked(MouseEvent event){
-
+        this.jeu.getListeBouletCanon().add(new Boulet_2_canon(event.getX() , event.getY()));
+        System.out.flush();
     }
 
     @Override

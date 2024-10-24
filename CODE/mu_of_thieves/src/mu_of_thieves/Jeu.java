@@ -7,6 +7,7 @@ package mu_of_thieves;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 import javax.imageio.ImageIO;
@@ -20,6 +21,7 @@ public class Jeu {
     private BufferedImage decor;
     private Joueur unJoueur;
     private Requin requin;
+    private ArrayList<Boulet_2_canon> boulets;
     
     //constructeurs
     public Jeu() {
@@ -30,6 +32,7 @@ public class Jeu {
         }
         this.unJoueur = new Joueur();
         this.requin = new Requin(unJoueur);
+        this.boulets = new ArrayList<Boulet_2_canon>();
     }
     
     //getteurs et setteurs
@@ -38,6 +41,9 @@ public class Jeu {
         return this.unJoueur;
     }
     
+    public ArrayList<Boulet_2_canon> getListeBouletCanon(){
+        return this.boulets;
+    }
     
     //Methodes
     
