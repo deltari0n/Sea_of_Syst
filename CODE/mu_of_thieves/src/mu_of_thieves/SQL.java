@@ -10,7 +10,8 @@ package mu_of_thieves;
  */
 public class SQL {
     //atributs
-    
+    int x;
+    int y ; 
     
     //constructeurs
     
