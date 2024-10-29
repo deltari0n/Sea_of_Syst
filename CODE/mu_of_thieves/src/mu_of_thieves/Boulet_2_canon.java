@@ -4,9 +4,11 @@
  */
 package mu_of_thieves;
 
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,11 +20,15 @@ import javax.imageio.ImageIO;
  */
 public class Boulet_2_canon extends Entite {
     
-    protected int x,y;
+    protected int xB,yB, xJ, yJ;
     protected int x_clique, y_clique;
     protected BufferedImage sprite;
-    protected ArrayList[] listePos;
-    protected int[] coeffPolynome;
+    protected ArrayList<int[]> listePos;
+    //protected int[] coeffPolynome;
+    protected Joueur joueur;
+    protected int indPos;
+    protected boolean trajFini;
+    //protected boolean cliqueADroite; // si on clique a droite de notre personnage 
     
     public Boulet_2_canon(){
         try {
@@ -32,7 +38,7 @@ public class Boulet_2_canon extends Entite {
         }
     }
     
-    public Boulet_2_canon(int xC, int yC){
+    public Boulet_2_canon(int xC, int yC, Joueur j){
         try {
             this.sprite = ImageIO.read(getClass().getResource("/ressources/Boulet.png"));
         } catch (IOException ex) {
@@ -40,20 +46,25 @@ public class Boulet_2_canon extends Entite {
         }
         this.x_clique = xC;
         this.y_clique = yC;
+        this.xJ = (int) j.getX();
+        this.yJ = (int) j.getY();
+        this.listePos = setTraj(x_clique,y_clique, xJ, yJ);
+        this.indPos = 0;
+        this.trajFini = false;
     }
     
     
     public int getX(){
-        return x;
+        return xB;
     }
     public int getY(){
-        return y;
+        return yB;
     }
     public void setX(int x){
-        this.x = x;
+        this.xB = x;
     }
     public void setY(int y){
-        this.y = y;
+        this.yB = y;
     }
     
     public int getX_clique(){
@@ -69,10 +80,26 @@ public class Boulet_2_canon extends Entite {
         this.y_clique = y;
     }
     
-    public ArrayList[] getListePos(){
+    public boolean getTrajFini(){
+        return trajFini;
+    }
+    
+    public ArrayList<int[]> getListePos(){
         return listePos;
     }
     
+    public String toString(List<int[]> laliste){
+        StringBuilder sb = new StringBuilder();
+        sb.append("[\n");
+
+        // Itération sur chaque liste dans la liste principale
+        for (int[] list : laliste) {
+            sb.append(Arrays.toString(list)).append("\n");
+        }
+
+        sb.append("]");
+        return sb.toString();
+    }
     
     public static double[] creerPolynome(int[] point1, int[] point2, int[] point3) {
         // Convertir les coordonnées en double pour les calculs
@@ -99,15 +126,73 @@ public class Boulet_2_canon extends Entite {
         return new double[]{a, b, c};
     }
     
-    public static List<int[]> genererPoints(double a, double b, double c, int xDebut, int xFin, int pas) {
-        List<int[]> points = new ArrayList<>();
+    public static ArrayList<int[]> genererPoints(double[] coeff, int xDebut, int xMax,
+            int pas, boolean cliqueADroite) {
+        ArrayList<int[]> points = new ArrayList<>();
+        double a = coeff[0];
+        double b = coeff[1];
+        double c = coeff[2];
         
-        for (int x = xDebut; x <= xFin; x += pas) {
-            double yDouble = a * x * x + b * x + c;  // Calcul de y en double
-            int y = (int) Math.round(yDouble);        // Arrondir y pour le transformer en int
-            points.add(new int[]{x, y});              // Ajouter le point (x, y) à la liste
+        //Si on clique a droite du perso on parcours la traj parabolique vers les x+
+        if (cliqueADroite){
+            /**on créé une liste de position que prend le boulet de canon entre le Joueur et la coordonnées max
+            de la map pour que le boulet continue sa traj au delà du clique
+            **/
+            for (int xInd = xDebut; xInd <= xMax; xInd += pas) {
+                double y = a * xInd * xInd + b * xInd + c; //on calcul la coordonnées y grace a x
+                //on vérifie que le boulet ne sort pas de la map (boulet dans l'eau pour éviter d'afficher 
+                //pour rien, si y<0 (boulet dans le ciel) on continuer d'afficher car il va retomber
+                if(y<800){
+                    int yInd = (int) Math.round(y);        // Arrondir y pour le transformer en int
+                    points.add(new int[]{xInd, yInd});             // Ajouter le point (x, y) à la liste
+                } else{
+                    xInd = xMax;
+                }
+            }
+        } else { //Si on clique a droite du perso on parcours la traj parabolique vers les x-
+            //même chose mais jusqu'à la bordure gauche donc x=0
+            for (int xInd = xDebut; xInd >= 0; xInd -= pas) {
+                double y = a * xInd * xInd + b * xInd + c;
+                if(y<800){
+                    int yInd = (int) Math.round(y);
+                    points.add(new int[]{xInd, yInd});
+                } else{
+                    xInd = 0;
+                }
+            }
         }
-        
         return points;
+    }
+    
+    public static ArrayList<int[]> setTraj(int xClique, int yClique, int xJoueur, int yJoueur){
+        int[] p1 = {xJoueur,yJoueur};
+        int[] p3 = {xClique,yClique};
+        int[] p2 = {(int) Math.round((xJoueur+xClique)/2), (int) Math.round((yJoueur+yClique)/2-200)};
+        //on créé un booleen qui vérifie si on clique à droite ou a gauche du joueur pour
+        //connaitre la direction de la trajectoire
+        boolean cliqueADroite;
+        if (xClique >= xJoueur){
+            cliqueADroite = true;
+        } else{
+            cliqueADroite = false;
+        }
+        double[] coeffPoly = creerPolynome(p1,p2,p3);
+        ArrayList<int[]> pos = genererPoints(coeffPoly, xJoueur, 2500, 5, 
+                cliqueADroite); //ajouter lecture taille map
+        return pos;
+    }
+    
+    public void miseAJour(){
+        xB = listePos.get(indPos)[0];
+        yB = listePos.get(indPos)[1];
+        if (indPos == listePos.size()-1){
+            trajFini = true;
+        } else {
+            indPos++;
+        }
+    }
+    
+    public void rendu(Graphics2D contexte) {
+        contexte.drawImage(this.sprite, (int) xB, (int) yB, null);
     }
 }

@@ -32,7 +32,7 @@ public class Jeu {
         }
         this.unJoueur = new Joueur();
         this.requin = new Requin(unJoueur);
-        this.boulets = new ArrayList<Boulet_2_canon>();
+        this.boulets = new ArrayList<>();
     }
     
     //getteurs et setteurs
@@ -52,14 +52,23 @@ public class Jeu {
         // 2. Rendu des sprites
         this.unJoueur.rendu(contexte);
         this.requin.rendu(contexte);
+        for (Boulet_2_canon boule : boulets){
+            boule.rendu(contexte);
+        }
         // 3. Rendu des textes
     }
     public void miseAJour() {
         // 1. Mise à jour de l’avatar en fonction des commandes des joueurs
         this.unJoueur.miseAJour();
-        this.requin.miseAJour();
-        
         // 2. Mise à jour des autres éléments (objets, monstres, etc.)
+        this.requin.miseAJour();
+        for (int n=0; n<this.boulets.size(); n++){
+            boulets.get(n).miseAJour();
+            if (boulets.get(n).getTrajFini()){
+                boulets.remove(n);
+                n--;
+            }
+        }
         // 3. Gérer les interactions (collisions et autres règles)
     }
     public boolean estTermine() {

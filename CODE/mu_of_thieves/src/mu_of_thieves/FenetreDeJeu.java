@@ -35,6 +35,7 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener,
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.addKeyListener(this);
+        this.addMouseListener(this);
         this.jLabel1 = new JLabel();
         this.jLabel1.setPreferredSize(new java.awt.Dimension(1450, 750));
         this.setContentPane(this.jLabel1);
@@ -108,19 +109,17 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener,
     @Override
     //MouseClicked est la méthode que vous devez compléter si vous avez une action à faire à chaque détection de clic !
     public void mouseClicked(MouseEvent event){
-        this.jeu.getListeBouletCanon().add(new Boulet_2_canon(event.getX() , event.getY()));
+        this.jeu.getListeBouletCanon().add(new Boulet_2_canon(event.getX() , event.getY(), this.jeu.getJoueur()));
         System.out.flush();
     }
 
     @Override
     //Le clic peut être vu comme la décomposition de deux mouvements : vous pressez, puis pvous relachez. Si vous avez besoin de faire cette distinction, complétez ici !
     public void mousePressed(MouseEvent event) {
-
     }
 
     @Override
     public void mouseReleased(MouseEvent event) {
-
     }
     
     
