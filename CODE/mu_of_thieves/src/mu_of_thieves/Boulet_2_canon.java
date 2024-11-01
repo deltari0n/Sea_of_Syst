@@ -164,6 +164,68 @@ public class Boulet_2_canon extends Entite {
         return points;
     }
     
+    
+    //version avec un pas absolu
+    public static ArrayList<int[]> genererPointsV2(double[] coeff, int xDebut, int xMax,
+            double pas, boolean cliqueADroite) {
+        ArrayList<int[]> points = new ArrayList<>();
+        double a = coeff[0];
+        double b = coeff[1];
+        double c = coeff[2];
+        
+        //on initialise le premier point
+        double yInd = a*xDebut*xDebut + b*xDebut + c;
+        points.add(new int[]{ xDebut, (int) yInd});
+        
+        //Si on clique a droite du perso on parcours la traj parabolique vers les x+
+        if (cliqueADroite){
+            /**on créé une liste de position que prend le boulet de canon entre le Joueur et la coordonnées max
+            de la map pour que le boulet continue sa traj au delà du clique
+            **/
+            int xInd = xDebut;
+            int xNext = xInd+1;
+            while(xInd < xMax && xNext < xMax+pas){
+                double yNext;
+                /** on va déterminer ou se trouve le prochain point sachant qu'on se déplace d'un pas absolu
+                 * on va donc pour chaque x le y associé puis on va calculer la distance euclidienne (le pas)
+                 * et si ce pas est assez proche du pas voulu on ajouter (x,y) à points
+                 * Pour commencer simplement on cherche le premier point x tel que distEucl>=pas
+                 */
+                
+                yInd = a*xInd*xInd + b*xInd + c;
+                yNext = a*xNext*xNext + b*xNext + c;
+                double distEucl = Math.sqrt((xNext-xInd)*(xNext-xInd) + (yNext-yInd)*(yNext-yInd));
+                if(distEucl>=pas){
+                    points.add(new int[]{ xNext, (int) yNext});
+                    xInd = xNext;
+                }
+                xNext++;
+            }
+        } else { //Si on clique a droite du perso on parcours la traj parabolique vers les x-
+            //même chose mais jusqu'à la bordure gauche donc x=0
+            int xInd = xDebut;
+            int xNext = xInd-1;
+            while(xInd > 0 && xNext > -pas){
+                double yNext;
+                /** on va déterminer ou se trouve le prochain point sachant qu'on se déplace d'un pas absolu
+                 * on va donc pour chaque x le y associé puis on va calculer la distance euclidienne (le pas)
+                 * et si ce pas est assez proche du pas voulu on ajouter (x,y) à points
+                 * Pour commencer simplement on cherche le premier point x tel que distEucl>=pas
+                 */
+                
+                yInd = a*xInd*xInd + b*xInd + c;
+                yNext = a*xNext*xNext + b*xNext + c;
+                double distEucl = Math.sqrt((xNext-xInd)*(xNext-xInd) + (yNext-yInd)*(yNext-yInd));
+                if(distEucl>=pas){
+                    points.add(new int[]{ xNext, (int) yNext});
+                    xInd = xNext;
+                }
+                xNext--;
+            }
+        }
+        return points;
+    }
+    
     public static ArrayList<int[]> setTraj(int xClique, int yClique, int xJoueur, int yJoueur){
         int[] p1 = {xJoueur,yJoueur};
         int[] p3 = {xClique,yClique};
@@ -177,7 +239,7 @@ public class Boulet_2_canon extends Entite {
             cliqueADroite = false;
         }
         double[] coeffPoly = creerPolynome(p1,p2,p3);
-        ArrayList<int[]> pos = genererPoints(coeffPoly, xJoueur, 2500, 5, 
+        ArrayList<int[]> pos = genererPointsV2(coeffPoly, xJoueur, 2500, 20, 
                 cliqueADroite); //ajouter lecture taille map
         return pos;
     }
@@ -193,6 +255,6 @@ public class Boulet_2_canon extends Entite {
     }
     
     public void rendu(Graphics2D contexte) {
-        contexte.drawImage(this.sprite, (int) xB, (int) yB, null);
+        contexte.drawImage(this.sprite, xB, yB, null);
     }
 }
