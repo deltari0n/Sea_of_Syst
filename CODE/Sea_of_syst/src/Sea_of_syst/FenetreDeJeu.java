@@ -4,6 +4,7 @@
  */
 package Sea_of_syst;
 
+import mu_of_thieves.*;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -67,11 +68,13 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener,
             this.jeu.getJoueur().setGauche(true);
         }
         if (event.getKeyCode() == event.VK_UP){ //aller en haut
-            this.jeu.getJoueur().setHaut(true);
+            this.jeu.getJoueur().setSaut(true);
         }
+        /**
         if (event.getKeyCode() == event.VK_DOWN){ //aller en bas
             this.jeu.getJoueur().setBas(true);
         }
+        * **/
         if (event.getKeyCode() == 32 || event.getKeyCode() == 90){ //sauter
             
         }
@@ -92,11 +95,13 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener,
             this.jeu.getJoueur().setGauche(false);
         }
         if (event.getKeyCode() == event.VK_UP){ //aller a gauche
-            this.jeu.getJoueur().setHaut(false);
+            this.jeu.getJoueur().setSaut(false);
         }
+        /**
         if (event.getKeyCode() == event.VK_DOWN){ //aller a gauche
             this.jeu.getJoueur().setBas(false);
         }
+        **/
         if (event.getKeyCode() == 32 || event.getKeyCode() == 90){ //sauter
             
         }
