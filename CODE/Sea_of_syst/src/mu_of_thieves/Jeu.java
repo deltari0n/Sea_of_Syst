@@ -55,7 +55,9 @@ public class Jeu {
         for (Boulet_2_canon boule : boulets){
             boule.rendu(contexte);
         }
+        
         // 3. Rendu des textes
+       
     }
     public void miseAJour() {
         // 1. Mise à jour de l’avatar en fonction des commandes des joueurs

@@ -87,7 +87,10 @@ public class Joueur extends Entite{
             y = 0;
         }
     }
+    public void DureeDeVie(){
+        
     
+    }
     
     //guetteur et setteur
     
