@@ -21,9 +21,13 @@ public class Mouette extends Entite{
     
     protected BufferedImage spriteDroiteHaut,spriteGaucheHaut,spriteDroiteBas,spriteGaucheBas;
     protected double x, y;
-    protected int posCible;
+    protected int posCibleX;
+    protected int posCibleY;
     private Random random;
     private Boolean vaADroite;
+    private double oscilAmplitude = 20;
+    private double oscilVitesse = 0.05;
+            
     
     public Mouette(){
         try {
@@ -37,31 +41,33 @@ public class Mouette extends Entite{
         this.x = 150;
         this.y = 150;
         random = new Random();
-        posCible = random.nextInt(1200); // trouver un moyen de lire directement la taille de la fenetre pour remplacer 1200
-        vaADroite = posCible >= x;
+        posCibleX = random.nextInt(1200); // trouver un moyen de lire directement la taille de la fenetre pour remplacer 1200
+        posCibleY = random.nextInt(50)+150 ;
+        vaADroite = posCibleX >= x;
     }
     
     public void miseAJour() {
         
-        if (this.posCible < this.x) {
-            if (Math.abs(this.posCible - this.x) < 7){
-                x -= Math.abs(this.posCible - this.x);
+        if (this.posCibleX < this.x) {
+            if (Math.abs(this.posCibleX - this.x) < 7){
+                x -= Math.abs(this.posCibleX - this.x);
             } else {
                 x -= 7;
             }
         }
-        if (this.posCible > this.x) {
-            if (Math.abs(this.posCible - this.x) < 7){
-                x += Math.abs(this.posCible - this.x);
+        if (this.posCibleX > this.x) {
+            if (Math.abs(this.posCibleX - this.x) < 7){
+                x += Math.abs(this.posCibleX - this.x);
             } else {
                 x += 7;
             }
         }
-        if (this.posCible == this.x) {
+        if (this.posCibleX == this.x) {
             //Random random = new Random();
-            posCible = (int) random.nextInt(1200);
-            vaADroite = posCible >= x;
+            posCibleX = (int) random.nextInt(1200);
+            vaADroite = posCibleX >= x;
         } 
+        y = posCibleY + oscilAmplitude * Math.sin(x * oscilVitesse);
     }
     
     
@@ -71,9 +77,9 @@ public class Mouette extends Entite{
     
     public void rendu(Graphics2D contexte) {
         if (vaADroite){
-            contexte.drawImage(this.spriteDroite, (int) x, (int) y, null);
+            contexte.drawImage(this.spriteDroiteHaut, (int) x, (int) y, null);
         } else{
-            contexte.drawImage(this.spriteGauche, (int) x, (int) y, null);
+            contexte.drawImage(this.spriteGaucheHaut, (int) x, (int) y, null);
         }
     }
     public double getX() {
@@ -83,9 +89,9 @@ public class Mouette extends Entite{
         return y;
     }
     public double getLargeur() {
-        return spriteDroite.getHeight();
+        return spriteDroiteHaut.getHeight();
     }
     public double getHauteur() {
-        return spriteDroite.getWidth();
+        return spriteDroiteHaut.getWidth();
     }
 }
