@@ -4,7 +4,7 @@
 */
 package mu_of_thieves;
 
-import outils.OutilsJDBC;
+//import outils.OutilsJDBC;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
