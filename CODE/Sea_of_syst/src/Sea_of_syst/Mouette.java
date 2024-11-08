@@ -27,6 +27,7 @@ public class Mouette extends Entite{
     private Boolean vaADroite;
     private double oscilAmplitude = 20;
     private double oscilVitesse = 0.05;
+    private boolean oscilEnHaut;
             
     
     public Mouette(){
@@ -67,7 +68,9 @@ public class Mouette extends Entite{
             posCibleX = (int) random.nextInt(1200);
             vaADroite = posCibleX >= x;
         } 
+        double ancienY = y;
         y = posCibleY + oscilAmplitude * Math.sin(x * oscilVitesse);
+        oscilEnHaut = y <ancienY;
     }
     
     
@@ -77,9 +80,19 @@ public class Mouette extends Entite{
     
     public void rendu(Graphics2D contexte) {
         if (vaADroite){
-            contexte.drawImage(this.spriteDroiteHaut, (int) x, (int) y, null);
+            if(oscilEnHaut){
+                contexte.drawImage(this.spriteDroiteBas, (int) x, (int) y, null);
+            }
+            else{
+                contexte.drawImage(this.spriteDroiteHaut, (int) x, (int) y, null);
+            }
         } else{
-            contexte.drawImage(this.spriteGaucheHaut, (int) x, (int) y, null);
+            if(oscilEnHaut){
+                contexte.drawImage(this.spriteGaucheBas, (int) x, (int) y, null);
+            }
+            else{
+                contexte.drawImage(this.spriteGaucheHaut, (int) x, (int) y, null);
+            }
         }
     }
     public double getX() {
@@ -88,10 +101,29 @@ public class Mouette extends Entite{
     public double getY() {
         return y;
     }
-    public double getLargeur() {
+    public double getLargeurDroiteHaut() {
         return spriteDroiteHaut.getHeight();
     }
-    public double getHauteur() {
+    public double getLargeurDroiteBas() {
+        return spriteDroiteBas.getHeight();
+    }
+    public double getLargeurGaucheHaut() {
+        return spriteGaucheHaut.getHeight();
+    }
+    public double getLargeurGaucheBas() {
+        return spriteGaucheBas.getHeight();
+    }
+    
+    public double getHauteurDroiteHaut() {
         return spriteDroiteHaut.getWidth();
+    }
+    public double getHauteurDroiteBas() {
+        return spriteDroiteBas.getWidth();
+    }
+    public double getHauteurGaucheHaut() {
+        return spriteGaucheHaut.getWidth();
+    }
+    public double getHauteurGaucheBas() {
+        return spriteGaucheBas.getWidth();
     }
 }
