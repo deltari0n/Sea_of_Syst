@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 import javax.imageio.ImageIO;
@@ -22,13 +23,14 @@ public class Joueur extends Entite{
     protected double x, y;
 
     
-
+    /**
     public void setListePosSaut(ArrayList[] listePosSaut) {
         this.listePosSaut = listePosSaut;
     }
-    private boolean gauche, droite, bas, haut, clique;
+    * */
+    private boolean gauche, droite, gravite, saut, clique;
     private int n;
-    private ArrayList[] listePosSaut;
+    private ArrayList<Integer> listePosChute;
 
     public Joueur() {
         try {
@@ -40,10 +42,10 @@ public class Joueur extends Entite{
         this.y = 300;
         this.gauche = false;
         this.droite = false;
-        this.haut = false;
-        this.bas = false;
+        this.saut = false;
         this.n = 0;
         this.clique = false;
+        this.listePosChute = new ArrayList<>(List.of(70, 70,50, 50,25,25,20,15,15,10,10,10,10));
     }
     
     public void miseAJour() {
@@ -60,13 +62,24 @@ public class Joueur extends Entite{
             x = 0;
         }
         //pour gérer la chute du joueur penser a renommer bas et haut de manière compréhensible
-        if (this.bas && !this.haut) {
-            y += 5;
+        if (y <400) {
+            if (5> Math.abs( y - 400)){
+                y+= Math.abs( y - 400) ;     
+            } 
+            else {
+                y += 5;
+            }
         }
         //pour gérer le saut du joueur
-        if (this.haut) {
-            y -= 5;
+        if (this.saut && y>=400) {
+            if (n <= listePosChute.size()){
+                y -= listePosChute.get(n);
+            }
+            else{
+                n=0;
+            }
         }
+        
         if (y > 700 - sprite.getWidth()) { // collision avec le bord droit de la scene
             y = 700 - sprite.getWidth();
         }
@@ -87,12 +100,14 @@ public class Joueur extends Entite{
     public void setDroite(boolean droite) {
         this.droite = droite;
     }
-    public void setHaut(boolean haut) {
-        this.haut = haut;
+    public void setSaut(boolean saut) {
+        this.saut = saut;
     }
+    /**
     public void setBas(boolean bas) {
-        this.bas = bas;
+        this.gravite = bas;
     }
+    **/
     public double getX() {
         return x;
     }
