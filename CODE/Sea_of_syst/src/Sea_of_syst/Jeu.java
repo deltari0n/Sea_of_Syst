@@ -74,9 +74,25 @@ public class Jeu {
             }
         }
         // 3. Gérer les interactions (collisions et autres règles)
+        if (collisionEntreJoueurEtRequin()){
+            this.unJoueur.setX(200);
+            this.unJoueur.setY(200);
+        }
     }
     public boolean estTermine() {
         // Renvoie vrai si la partie est terminée (gagnée ou perdue)
         return false;
+    }
+    
+    //gestion des collisions
+    public boolean collisionEntreJoueurEtRequin() {
+        if ((requin.getX() >= unJoueur.getX() + unJoueur.getLargeur()) // trop à droite
+                || (requin.getX() + requin.getLargeur() <= unJoueur.getX()) // trop à gauche
+                || (requin.getY() >= unJoueur.getY() + unJoueur.getHauteur()) // trop en bas
+                || (requin.getY() + requin.getHauteur() <= unJoueur.getY())) { // trop en haut
+            return false;
+        } else {
+            return true;
+        }
     }
 }
