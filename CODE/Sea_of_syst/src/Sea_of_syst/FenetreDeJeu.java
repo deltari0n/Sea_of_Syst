@@ -4,7 +4,7 @@
  */
 package Sea_of_syst;
 
-import mu_of_thieves.*;
+//import mu_of_thieves.*;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

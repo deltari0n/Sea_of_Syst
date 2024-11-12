@@ -6,7 +6,9 @@ package Sea_of_syst;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -17,6 +19,8 @@ import javax.imageio.ImageIO;
  */
 public class Map {
     private BufferedImage map;
+    private int hauteur,largeur;
+    
     
     public Map(){
         try {
@@ -24,6 +28,8 @@ public class Map {
         } catch (IOException ex) {
             Logger.getLogger(Joueur.class.getName()).log(Level.SEVERE, null, ex);
         }
+        hauteur = map.getHeight();
+        largeur = map.getWidth();
     }
     
     
@@ -33,7 +39,7 @@ public class Map {
         int n = map.getWidth();
         int m = map.getHeight();
         int[][][] tab = new int[n][m][3];
-        for(int i=0;i<n;n++){
+        for(int i=0;i<n;i++){
             for(int j=0;j<m;j++){
                 //System.out.println(map.getPixel(i, j));
                 Color color = new Color(map.getRGB(i, j));
@@ -53,7 +59,7 @@ public class Map {
         int n = map.getWidth();
         int m = map.getHeight();
         int[][] tabBinaire = new int[n][m];
-        for(int i=0;i<n;n++){
+        for(int i=0;i<n;i++){
             for(int j=0;j<m;j++){
                 if(tab[i][i][0]==0 && tab[i][j][1]==0 && tab[i][j][2]==0){
                     tabBinaire[i][j] = 0;
@@ -66,6 +72,18 @@ public class Map {
     }
     
     public void ecritureFichierTabBinaire(int[][] tab){
+        try {
+            String sauvegardeMap = "map";
+            FileWriter sauvegarde = new FileWriter(sauvegardeMap);
+            for (int i=0; i<this.largeur; i++){
+                sauvegarde.write(Arrays.toString(tab[i])+ System.getProperty("line.separator"));
+            }
+            sauvegarde.close();
+        } catch (IOException e) {
+        }
+    }
+    
+    public void afficherMap(){
         
     }
 }
