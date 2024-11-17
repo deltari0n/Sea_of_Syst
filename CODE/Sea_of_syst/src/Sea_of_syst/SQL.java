@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
 */
-package mu_of_thieves;
+package Sea_of_syst;
 
 //import outils.OutilsJDBC;
 import java.sql.Connection;
@@ -11,8 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class SQL {
-    
+public class SQL {    
     //Attribut static on peut l'acceder avec le nom de la classe
     private static Connection connection = null;
     private static String username="etudiant";
@@ -43,7 +42,6 @@ public class SQL {
         }
         return null;
     }
-    
 }
     
 
