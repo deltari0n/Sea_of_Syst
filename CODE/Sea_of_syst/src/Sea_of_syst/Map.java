@@ -21,7 +21,7 @@ import javax.imageio.ImageIO;
  * @author vruche
  */
 public class Map {
-    private BufferedImage map;
+    private BufferedImage map, mapModified;
     private int hauteur,largeur;
     private int[][][] tabImage;
     private int[][] tabBinImage;
@@ -37,6 +37,14 @@ public class Map {
         tabImage = convPNGToTab(map);
         tabBinImage = convTabToBinaire(tabImage);
     }
+    
+    //getteur & setteur
+    
+    public BufferedImage getMap(){
+        return this.map;
+    }
+    
+    
     
     
     //on va créer un tableau qui va convertir tout les pixel de la map en 1 et le fond en 0
@@ -118,6 +126,6 @@ public class Map {
     }
     
     public void rendu(Graphics2D contexte) {
-        contexte.drawImage(this.map, 0, 0, null);
+        contexte.drawImage(this.mapModified, 0, 0, null);
     }
 }

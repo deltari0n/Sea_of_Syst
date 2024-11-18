@@ -19,16 +19,18 @@ public class Mu_of_thieves {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        /**
+        
         Map map = new Map();
         int[][][] tab1;
         int[][] tab2;
+        
+        /**
         tab1 = map.convPNGToTab();
         System.out.println("check1");
         tab2 = map.convTabToBinaire(tab1);
         System.out.println("check2");
         map.ecritureFichierTabBinaire(tab2);
-        * */
+        **/
     }
     
 }

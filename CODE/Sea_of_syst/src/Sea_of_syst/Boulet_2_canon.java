@@ -28,6 +28,7 @@ public class Boulet_2_canon extends Entite {
     protected Joueur joueur;
     protected int indPos;
     protected boolean trajFini;
+    private int largeur, hauteur;
     //protected boolean cliqueADroite; // si on clique a droite de notre personnage 
     
     public Boulet_2_canon(){
@@ -51,6 +52,8 @@ public class Boulet_2_canon extends Entite {
         this.listePos = setTraj(x_clique,y_clique, xJ, yJ);
         this.indPos = 0;
         this.trajFini = false;
+        this.hauteur = sprite.getHeight();
+        this.largeur = sprite.getWidth();
     }
     
     
@@ -65,6 +68,13 @@ public class Boulet_2_canon extends Entite {
     }
     public void setY(int y){
         this.yB = y;
+    }
+    
+    public int getLargeur(){
+        return this.largeur;
+    }
+    public int getHauteur(){
+        return this.hauteur;
     }
     
     public int getX_clique(){

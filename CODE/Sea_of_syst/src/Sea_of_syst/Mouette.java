@@ -28,7 +28,6 @@ public class Mouette extends Entite{
     private double oscilAmplitude = 20;
     private double oscilVitesse = 0.05;
     private boolean oscilEnHaut;
-            
     
     public Mouette(){
         try {
@@ -101,6 +100,13 @@ public class Mouette extends Entite{
     public double getY() {
         return y;
     }
+    public void setX(int x){
+        this.x = x;
+    }
+    public void setY(int y){
+        this.y = y;
+    }
+    
     public double getLargeurDroiteHaut() {
         return spriteDroiteHaut.getHeight();
     }
