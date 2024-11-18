@@ -129,6 +129,13 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener,
     public void mouseReleased(MouseEvent event) {
     }
     
+     @Override
+    public void mouseEntered(MouseEvent e) {
+        }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        }
     
     //_________________________________________________________________________________________________________________________________________
     // Methode appelee par le timer et qui effectue la boucle de jeu
@@ -150,12 +157,5 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener,
         fenetre.setVisible(true);
     }
 
-    @Override
-    public void mouseEntered(MouseEvent e) {
-        }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-        }
 
 }

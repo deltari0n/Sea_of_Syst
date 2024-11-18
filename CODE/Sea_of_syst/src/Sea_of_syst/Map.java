@@ -38,6 +38,8 @@ public class Map {
         tabBinImage = convTabToBinaire(tabImage);
     }
     
+    
+    //__________________________________________________________________________
     //getteur & setteur
     
     public BufferedImage getMap(){
@@ -45,9 +47,10 @@ public class Map {
     }
     
     
+    //__________________________________________________________________________
+    //EXTRACTION ET ECRITURE DE L'AFFICHAGE ET DES HITBOX DE LA MAP
     
-    
-    //on va créer un tableau qui va convertir tout les pixel de la map en 1 et le fond en 0
+    //on va créer une méthode qui va convertir la map sous format BufferedImage en un tableau de int
     
     public static int[][][] convPNGToTab(BufferedImage map){
         int h = map.getHeight();
@@ -67,7 +70,8 @@ public class Map {
         return tab;
     }
     
-    //méthodes pour convertir les pixels de la map en 1 et 0 si pas de pixel(fond)
+    //méthode pour convertir les pixels de la map en 1 et 0 si pas de pixel(fond)
+    //cela servira entre autre pour gérer les collisions
     public static int[][] convTabToBinaire(int[][][] tab){
         int h = tab.length;
         int l = tab[0].length;
@@ -115,11 +119,9 @@ public class Map {
         return tabBinImage;
     }
     
-    public void afficherMap(){
-        int[][][] newMap;
-    }
     
-    
+    //__________________________________________________________________________
+    //comme toutes les autres classes...
     
     public void miseAJour() {
         
@@ -128,4 +130,29 @@ public class Map {
     public void rendu(Graphics2D contexte) {
         contexte.drawImage(this.mapModified, 0, 0, null);
     }
+    
+    
+    //__________________________________________________________________________
+    //DESTRUCTION ET MODIFICATION DE LA MAP
+    
+    // les méthodes suivantes servent pour la destruction et la modif de la map
+    
+    
+    /** 
+     * on recombine le tableau binaire avec le tableau de la map pour pouvoir 
+     * afficher le map en enlevant les parties détruites.
+     * */
+    public void combinaisonBinTab(){
+        int[][][] newMap;
+    }
+    
+    /**
+     * Méthode pour mettre à jour la carte en fonction des modifs
+     */
+    
+    public void miseAJourCarte(){
+        
+    }
+    
+    
 }
