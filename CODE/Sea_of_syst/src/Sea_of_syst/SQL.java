@@ -21,7 +21,6 @@ public class SQL {
     //Empeche les autres objets de creer un objet SQL
     private SQL(){ 
     }
-    
     // Methode pour acceder a l'objet connection
     // Cette methode est la seule maniere pour acceder a l'objet Connection
     public static Connection getConnection(){

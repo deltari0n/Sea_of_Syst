@@ -16,7 +16,6 @@ import java.sql.SQLException;
  */
 public class DBA_Joueur {
     
-
     // Select joueur
     public String getJoueur(int id_joueur){
         Connection connexion = SQL.getConnection();
@@ -45,7 +44,6 @@ public class DBA_Joueur {
             PreparedStatement requete = connexion.prepareStatement("DELETE FROM joueur WHERE id_joueur = ?");
             requete.setInt(1, id_joueur);
             requete.executeUpdate();
-
             requete.close();
             connexion.close();
         } catch (SQLException ex) {
@@ -95,13 +93,10 @@ public class DBA_Joueur {
         }
     }
     
-    public static void main(String[] args){
-        DBA_Joueur dba = new DBA_Joueur();
-        dba.UpdateJoeur(6,"abdelhakim 2", 10, 10, 12, 12, "avatar");
-   
+//    public static void main(String[] args){
+//        DBA_Joueur dba = new DBA_Joueur();
+//        dba.UpdateJoeur(6,"abdelhakim 2", 10, 10, 12, 12, "avatar");
+//   
     }
-    
-    
-    
-    
+   
 }
