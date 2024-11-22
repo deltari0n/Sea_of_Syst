@@ -24,6 +24,8 @@ public class Jeu {
     private Mouette mouette;
     private ArrayList<Boulet_2_canon> boulets;
     private Map map;
+    private long tempsActuel = System.currentTimeMillis();
+
     
     //constructeur
     public Jeu() {
@@ -75,7 +77,8 @@ public class Jeu {
         //this.unJoueur.miseAJour();
         // 2. Mise à jour des autres éléments (objets, monstres, etc.)
         this.requin.miseAJour();
-        this.mouette.miseAJour();
+        
+        this.mouette.miseAJour(long tempsActuel);
         for (int n=0; n<this.boulets.size(); n++){
             boulets.get(n).miseAJour();
             if (boulets.get(n).getTrajFini()){
