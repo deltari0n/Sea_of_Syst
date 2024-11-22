@@ -29,6 +29,12 @@ public class Mouette extends Entite {
     private double oscilAmplitude = 20;
     private double oscilVitesse = 0.05;
     private boolean oscilEnHaut;
+    private long debutJeu;
+    private long dureePartie = 10 * 60 * 1000;
+    private boolean mouetteVisible = false;
+    private final long apparitionMouette;
+
+    public Mouette() {
         try {
             this.spriteDroiteHaut = ImageIO.read(getClass().getResource("/ressources/Mouette_ailes_haut_droite.png"));
             this.spriteGaucheHaut = ImageIO.read(getClass().getResource("/ressources/Mouette_ailes_haut_gauche.png"));
