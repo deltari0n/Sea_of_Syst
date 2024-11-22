@@ -68,8 +68,13 @@ public class Jeu {
             boule.rendu(contexte);
         }
         // 3. Rendu des textes
+            //affichage du nombre de coeur
+        
+            
+            
     }
     
+
     public void miseAJour() {
         // Mise à jour de la map
         
@@ -115,8 +120,12 @@ public class Jeu {
         if (collisionEntreMouetteEtBoulet()){
             this.mouette.setX(0);
         }
-        
-        
+
+        // 4. Diminution de la vie de joueur si il y a de collision 
+        if (collisionEntreJoueurEtRequin()){
+            this.unJoueur.setVie(unJoueur.getVie()-1);
+        }
+
     }
     
     public boolean estTermine() {
@@ -134,6 +143,7 @@ public class Jeu {
     
     
     //__________________________________________________________________________
+
     //gestion des collisions
     public boolean collisionEntreJoueurEtRequin() {
         if ((requin.getX() >= unJoueur.getX() + unJoueur.getLargeur()) // trop à droite

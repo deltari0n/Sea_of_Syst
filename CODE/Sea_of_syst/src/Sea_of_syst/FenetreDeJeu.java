@@ -5,6 +5,7 @@
 package Sea_of_syst;
 
 //import mu_of_thieves.*;
+
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,19 +18,24 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.Timer;
-
+import java.awt.Image; 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 /**
  *
  * @author vruche
  */
 public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener, MouseListener {
     
-    private BufferedImage framebuffer;
+    private BufferedImage framebuffer,coeurImage ;
     private Graphics2D contexte;
     private JLabel jLabel1;
     private Jeu jeu;
     private Timer timer;
     private int elapsedTime; // Temps écoulé en secondes
+   
 
     public FenetreDeJeu() { 
         // initialisation de la fenetre
@@ -58,21 +64,34 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener,
         
         // Initialisation du temps écoulé
         this.elapsedTime = 0;
-
+        
+        
+        
+        
+        
     }
+   
     
     
-     // Méthode pour dessiner le Timer sur le jeu
+    
+    
+//      Méthode pour dessiner le Timer sur le jeu
     private void drawTimer() {
-        // Effacer l'espace dédié au timer
+       // Effacer l'espace dédié au timer
         contexte.setColor(new java.awt.Color(255, 255, 255, 200)); // Couleur de fond semi-transparente
-        contexte.fillRect(10, 10, 150, 30);
+        contexte.fillRect(10, 10, 150, 30); // Dessiner un rectangle pour le fond du timer
 
-        // Dessiner le temps écoulé
-        contexte.setColor(java.awt.Color.BLACK);
-        contexte.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 20));
-        String formattedTime = String.format("Temps : %02d:%02d", elapsedTime / 60, elapsedTime % 60);
-        contexte.drawString(formattedTime, 15, 30);
+        // Calcul du temps écoulé en minutes et secondes
+        int minutes = elapsedTime / 60; // Convertir le temps en minutes
+        int secondes = elapsedTime % 60; // Récupérer les secondes restantes
+
+        // Formatage du texte du timer
+        String formattedTime = String.format("Temps : %02d:%02d", minutes, secondes); // Format: "Temps : 01:30"
+
+        // Dessiner le texte du timer sur l'écran
+        contexte.setColor(java.awt.Color.BLACK); // Couleur du texte
+        contexte.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 20)); // Police du texte
+        contexte.drawString(formattedTime, 15, 30); // Positionner le texte dans le rectangle
     }
     
  
@@ -162,9 +181,9 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener,
         this.jeu.miseAJour();
         
         // Mettre à jour le temps (toutes les 1000 ms -> 1 seconde)
-        if (this.timer.getDelay() % 1000 == 0) {
-            elapsedTime++;
-        }
+        elapsedTime++;
+        // Mettre à jour l'affichage
+        repaint();
         // Rendu graphique
         this.jeu.rendu(contexte);
 
