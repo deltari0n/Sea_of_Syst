@@ -5,7 +5,10 @@
 package Sea_of_syst;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
@@ -18,31 +21,44 @@ import javax.imageio.ImageIO;
  * @author vruche
  */
 public class Map {
-    private BufferedImage map;
+    private BufferedImage map, mapModified;
     private int hauteur,largeur;
-    
+    private int[][][] tabImage;
+    private int[][] tabBinImage;
     
     public Map(){
         try {
-            this.map = ImageIO.read(getClass().getResource("/ressources/Boulet.png"));
+            this.map = ImageIO.read(getClass().getResource("/ressources/map.png"));
         } catch (IOException ex) {
             Logger.getLogger(Joueur.class.getName()).log(Level.SEVERE, null, ex);
         }
         hauteur = map.getHeight();
         largeur = map.getWidth();
+        tabImage = convPNGToTab(map);
+        tabBinImage = convTabToBinaire(tabImage);
     }
     
     
-    //on va créer un tableau qui va convertir tout les pixel de la map en 1 et le fond en 0
+    //__________________________________________________________________________
+    //getteur & setteur
     
-    public int[][][] convPNGToTab(){
-        int n = map.getWidth();
-        int m = map.getHeight();
-        int[][][] tab = new int[n][m][3];
-        for(int i=0;i<n;i++){
-            for(int j=0;j<m;j++){
-                //System.out.println(map.getPixel(i, j));
-                Color color = new Color(map.getRGB(i, j));
+    public BufferedImage getMap(){
+        return this.map;
+    }
+    
+    
+    //__________________________________________________________________________
+    //EXTRACTION ET ECRITURE DE L'AFFICHAGE ET DES HITBOX DE LA MAP
+    
+    //on va créer une méthode qui va convertir la map sous format BufferedImage en un tableau de int
+    
+    public static int[][][] convPNGToTab(BufferedImage map){
+        int h = map.getHeight();
+        int l = map.getWidth();
+        int[][][] tab = new int[h][l][3];
+        for(int i=0;i<h;i++){
+            for(int j=0;j<l;j++){
+                Color color = new Color(map.getRGB(j, i));
                 int red = color.getRed();
                 int green = color.getGreen();
                 int blue = color.getBlue();
@@ -54,14 +70,15 @@ public class Map {
         return tab;
     }
     
-    //méthodes pour convertir les pixels de la map en 1 et 0 si pas de pixel(fond)
-    public int[][] convTabToBinaire(int[][][] tab){
-        int n = map.getWidth();
-        int m = map.getHeight();
-        int[][] tabBinaire = new int[n][m];
-        for(int i=0;i<n;i++){
-            for(int j=0;j<m;j++){
-                if(tab[i][i][0]==0 && tab[i][j][1]==0 && tab[i][j][2]==0){
+    //méthode pour convertir les pixels de la map en 1 et 0 si pas de pixel(fond)
+    //cela servira entre autre pour gérer les collisions
+    public static int[][] convTabToBinaire(int[][][] tab){
+        int h = tab.length;
+        int l = tab[0].length;
+        int[][] tabBinaire = new int[h][l];
+        for(int i=0;i<h;i++){
+            for(int j=0;j<l;j++){
+                if(tab[i][j][0]==0 && tab[i][j][1]==0 && tab[i][j][2]==0){
                     tabBinaire[i][j] = 0;
                 } else{
                     tabBinaire[i][j] = 1;
@@ -75,7 +92,7 @@ public class Map {
         try {
             String sauvegardeMap = "map";
             FileWriter sauvegarde = new FileWriter(sauvegardeMap);
-            for (int i=0; i<this.largeur; i++){
+            for (int i=0; i<this.hauteur; i++){
                 sauvegarde.write(Arrays.toString(tab[i])+ System.getProperty("line.separator"));
             }
             sauvegarde.close();
@@ -83,7 +100,59 @@ public class Map {
         }
     }
     
-    public void afficherMap(){
+    public int[][] lectureFichiertabBinaire(String nomDuFichier){
+        try{
+            BufferedReader fichier = new BufferedReader(new FileReader(nomDuFichier));
+            tabBinImage = new int[hauteur][largeur];
+            for(int i=0; i<hauteur ;i++){
+                String ligne;
+                String eleLigne[];
+                ligne = fichier.readLine();
+                eleLigne = ligne.split(" ");
+                for(int j=0; j<largeur; j++){
+                    tabBinImage[i][j] = Integer.parseInt(eleLigne[j]);
+                }
+            }
+            fichier.close();
+        } catch (IOException e) {
+        }
+        return tabBinImage;
+    }
+    
+    
+    //__________________________________________________________________________
+    //comme toutes les autres classes...
+    
+    public void miseAJour() {
         
     }
+    
+    public void rendu(Graphics2D contexte) {
+        contexte.drawImage(this.mapModified, 0, 0, null);
+    }
+    
+    
+    //__________________________________________________________________________
+    //DESTRUCTION ET MODIFICATION DE LA MAP
+    
+    // les méthodes suivantes servent pour la destruction et la modif de la map
+    
+    
+    /** 
+     * on recombine le tableau binaire avec le tableau de la map pour pouvoir 
+     * afficher le map en enlevant les parties détruites.
+     * */
+    public void combinaisonBinTab(){
+        int[][][] newMap;
+    }
+    
+    /**
+     * Méthode pour mettre à jour la carte en fonction des modifs
+     */
+    
+    public void miseAJourCarte(){
+        
+    }
+    
+    
 }

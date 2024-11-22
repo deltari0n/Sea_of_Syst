@@ -78,6 +78,9 @@ public class Jeu {
             this.unJoueur.setX(200);
             this.unJoueur.setY(200);
         }
+        if (collisionEntreMouetteEtBoulet()){
+            this.mouette.setX(0);
+        }
     }
     public boolean estTermine() {
         // Renvoie vrai si la partie est terminée (gagnée ou perdue)
@@ -94,5 +97,22 @@ public class Jeu {
         } else {
             return true;
         }
+    }
+    
+    //à retravailler parceque le code est dégueulasse
+    
+    public boolean collisionEntreMouetteEtBoulet(){
+        for(Boulet_2_canon boulet : boulets){
+            /** on reprend le même code que précédent, si y'a pas de collision, on fait r
+            et si y'en a une on return direct true **/
+            if ((boulet.getX() >= mouette.getX() + mouette.getLargeurDroiteHaut()) // trop à droite
+                    || (boulet.getX() + boulet.getLargeur() <= mouette.getX()) // trop à gauche
+                    || (boulet.getY() >= mouette.getY() + mouette.getHauteurDroiteHaut()) // trop en bas
+                    || (boulet.getY() + boulet.getHauteur() <= mouette.getY())) { // trop en haut
+            } else {
+                return true;
+            }
+        }
+        return false; 
     }
 }

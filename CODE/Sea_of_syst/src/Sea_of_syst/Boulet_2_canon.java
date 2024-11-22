@@ -28,7 +28,11 @@ public class Boulet_2_canon extends Entite {
     protected Joueur joueur;
     protected int indPos;
     protected boolean trajFini;
-    //protected boolean cliqueADroite; // si on clique a droite de notre personnage 
+    private int largeur, hauteur;
+    
+    
+    //__________________________________________________________________________
+    //constructeurs
     
     public Boulet_2_canon(){
         try {
@@ -51,8 +55,13 @@ public class Boulet_2_canon extends Entite {
         this.listePos = setTraj(x_clique,y_clique, xJ, yJ);
         this.indPos = 0;
         this.trajFini = false;
+        this.hauteur = sprite.getHeight();
+        this.largeur = sprite.getWidth();
     }
     
+    
+    //__________________________________________________________________________
+    //getteur & setteur
     
     public int getX(){
         return xB;
@@ -65,6 +74,13 @@ public class Boulet_2_canon extends Entite {
     }
     public void setY(int y){
         this.yB = y;
+    }
+    
+    public int getLargeur(){
+        return this.largeur;
+    }
+    public int getHauteur(){
+        return this.hauteur;
     }
     
     public int getX_clique(){
@@ -101,6 +117,10 @@ public class Boulet_2_canon extends Entite {
         return sb.toString();
     }
     
+    
+    //__________________________________________________________________________
+    
+    //Créer le polynome associé aux trois points choisis (joueur, clique, milieu)
     public static double[] creerPolynome(int[] point1, int[] point2, int[] point3) {
         // Convertir les coordonnées en double pour les calculs
         double x1 = point1[0], y1 = point1[1];
@@ -126,6 +146,11 @@ public class Boulet_2_canon extends Entite {
         return new double[]{a, b, c};
     }
     
+    
+    //Méthodes pour générer la liste de points par lequel va passer le boulet en 
+    //fonction de sa vitesse (son pas) et de sa direction
+    
+    //première version avec un pas selon x (pas idéal)
     public static ArrayList<int[]> genererPoints(double[] coeff, int xDebut, int xMax,
             int pas, boolean cliqueADroite) {
         ArrayList<int[]> points = new ArrayList<>();
@@ -226,6 +251,8 @@ public class Boulet_2_canon extends Entite {
         return points;
     }
     
+    
+    //Méthode pour créer la traj du boulets de canon en combinant les méthodes précédente
     public static ArrayList<int[]> setTraj(int xClique, int yClique, int xJoueur, int yJoueur){
         int[] p1 = {xJoueur,yJoueur};
         int[] p3 = {xClique,yClique};
@@ -243,6 +270,10 @@ public class Boulet_2_canon extends Entite {
                 cliqueADroite); //ajouter lecture taille map
         return pos;
     }
+    
+    
+    //__________________________________________________________________________
+    //mise à jour et rendu pour la classe Jeu
     
     public void miseAJour(){
         xB = listePos.get(indPos)[0];

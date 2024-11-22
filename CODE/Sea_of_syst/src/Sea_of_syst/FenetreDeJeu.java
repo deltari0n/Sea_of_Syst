@@ -29,6 +29,7 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener,
     private JLabel jLabel1;
     private Jeu jeu;
     private Timer timer;
+    private int elapsedTime; // Temps écoulé en secondes
 
     public FenetreDeJeu() { 
         // initialisation de la fenetre
@@ -46,19 +47,38 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener,
         this.framebuffer = new BufferedImage(this.jLabel1.getWidth(), this.jLabel1.getHeight(), BufferedImage.TYPE_INT_ARGB);
         this.jLabel1.setIcon(new ImageIcon(framebuffer));
         this.contexte = this.framebuffer.createGraphics();
+        //this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        //this.setUndecorated(true);
         
         // Creation du jeu
         this.jeu = new Jeu();
         // Creation du Timer qui appelle this.actionPerformed() tous les 40 ms
         this.timer = new Timer(40, this);
         this.timer.start();
+        
+        // Initialisation du temps écoulé
+        this.elapsedTime = 0;
 
     }
     
     
+     // Méthode pour dessiner le Timer sur le jeu
+    private void drawTimer() {
+        // Effacer l'espace dédié au timer
+        contexte.setColor(new java.awt.Color(255, 255, 255, 200)); // Couleur de fond semi-transparente
+        contexte.fillRect(10, 10, 150, 30);
+
+        // Dessiner le temps écoulé
+        contexte.setColor(java.awt.Color.BLACK);
+        contexte.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 20));
+        String formattedTime = String.format("Temps : %02d:%02d", elapsedTime / 60, elapsedTime % 60);
+        contexte.drawString(formattedTime, 15, 30);
+    }
+    
+ 
+    
     //_________________________________________________________________________________________________________________________________________
     //méthodes d'implémentation du clavier
-    
     @Override
     public void keyPressed(KeyEvent event) {
         if (event.getKeyCode() == event.VK_RIGHT || event.getKeyCode() == 68){ //si on appuie sur d ou flèche droite pour aller à droite
@@ -127,14 +147,33 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener,
     public void mouseReleased(MouseEvent event) {
     }
     
+     @Override
+    public void mouseEntered(MouseEvent e) {
+        }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        }
     
     //_________________________________________________________________________________________________________________________________________
     // Methode appelee par le timer et qui effectue la boucle de jeu
     @Override
     public void actionPerformed(ActionEvent e) {
         this.jeu.miseAJour();
+        
+        // Mettre à jour le temps (toutes les 1000 ms -> 1 seconde)
+        if (this.timer.getDelay() % 1000 == 0) {
+            elapsedTime++;
+        }
+        // Rendu graphique
         this.jeu.rendu(contexte);
+
+        // Affichage du temps écoulé sur l'écran
+        drawTimer();
+
+        // Rafraîchir l'affichage
         this.jLabel1.repaint();
+        
         /**
         if (this.jeu.estTermine()) {
             this.timer.stop();
@@ -148,12 +187,5 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener,
         fenetre.setVisible(true);
     }
 
-    @Override
-    public void mouseEntered(MouseEvent e) {
-        }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-        }
 
 }
