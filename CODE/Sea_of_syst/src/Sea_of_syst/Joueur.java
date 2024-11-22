@@ -20,7 +20,7 @@ import javax.imageio.ImageIO;
 public class Joueur{
     
     //attributs et constructeur
-    private BufferedImage sprite, coeur;
+    private BufferedImage sprite, coeur,coeurG ;
     private int x, y;
     private boolean gauche, droite, gravite, saut,collision , clique;
     private int n;
@@ -35,6 +35,7 @@ public class Joueur{
         try {
             this.sprite = ImageIO.read(getClass().getResource("/ressources/Pirate_sprite.png"));
             this.coeur = ImageIO.read(getClass().getResource("/ressources/coeur.png"));
+            this.coeurG = ImageIO.read(getClass().getResource("/ressources/coeurG.png"));
         } catch (IOException ex) {
             Logger.getLogger(Joueur.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -187,10 +188,16 @@ public class Joueur{
         //affichage du sprite du joueur
         contexte.drawImage(this.sprite, (int) x, (int) y, null);
         //affichage de son nombre de coeur
-        for (int i = 0; i < vie; i++) {
-            contexte.drawImage(coeur, 10 + (i * 40), 50, 30, 30, null); 
+        // Dessiner les cœurs en fonction de la vie du joueur
+        for (int i = 0; i < 5; i++) {
+            if (i < vie) {
+                // Afficher un cœur rouge pour chaque vie
+                contexte.drawImage(coeur, 10 + (i * 40), 50, 30, 30, null); 
+            } else {
+                // Afficher un cœur gris pour les vies restantes
+                contexte.drawImage(coeurG, 10 + (i * 40), 50, 30, 30, null);
+            }
         }
-
     }
     
 }
