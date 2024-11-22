@@ -28,7 +28,6 @@ public class DBA_Requin {
             if (resultat.next()){
                 return resultat.getDouble(1)+ " " + resultat.getDouble(2);       
             }else{
-                return "Impossible de trouver le Requin";
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -81,6 +80,16 @@ public class DBA_Requin {
      }
     }
     
-        
+//    // test  insert
+//    public static void main(String[] args){
+//         DBA_Requin rq = new DBA_Requin();
+//         rq.DeleteRequin(7,40,50);
+//    }
+    
+    // test insert
+//     public static void main(String[] args){
+//         DBA_Requin rq = new DBA_Requin();
+//         rq.DeleteRequin(6);
+//    }
 }
 

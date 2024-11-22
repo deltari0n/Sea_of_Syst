@@ -9,7 +9,6 @@ import Sea_of_syst.SQL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,18 +18,16 @@ import java.util.List;
  */
 public class DBA_Joueur {
     
-    // Select joueur
-
-    public List<Object> getJoueur(int id_joueur) {
+  // Select joueur
+   public List<Object> getJoueur(int id_joueur) {
     Connection connexion = SQL.getConnection();
     List<Object> joueurData = new ArrayList<>();
-    
     try {
         PreparedStatement requete = connexion.prepareStatement(
             "SELECT username, x, y, niveau_vie, score, avatar FROM joueur WHERE id_joueur = ?");
         requete.setInt(1, id_joueur);
         ResultSet resultat = requete.executeQuery();
-        
+        ResultSet resultat = requete.executeQuery();   
         if (resultat.next()) {
             joueurData.add(resultat.getString("username"));  // Nom d'utilisateur
             joueurData.add(resultat.getDouble("x"));         // Coordonnée x
@@ -42,6 +39,7 @@ public class DBA_Joueur {
             joueurData.add("Impossible de trouver le joueur");
         }
 
+        }
         // Fermer la requête et la connexion
         resultat.close();
         requete.close();
@@ -50,11 +48,9 @@ public class DBA_Joueur {
         ex.printStackTrace();
     }
     return joueurData;
-}
-
     
-    // Delete Joeur 
-    public void DeleteJoeur(int id_joueur){
+    // Delete Joueur 
+    public void DeleteJoueur(int id_joueur){
         Connection connexion = SQL.getConnection();
         try {
             PreparedStatement requete = connexion.prepareStatement("DELETE FROM joueur WHERE id_joueur = ?");
@@ -68,8 +64,8 @@ public class DBA_Joueur {
     }
     
     
-    // Insert Joeur 
-    public void InsertJoeur(String username, double x, double y, int niveau_vie, int score, String avatar){
+    // Insert Joueur 
+    public void InsertJoueur(String username, double x, double y, int niveau_vie, int score, String avatar){
         Connection connexion = SQL.getConnection();
         try {
             PreparedStatement requete = connexion.prepareStatement("INSERT INTO joueur (username, x, y, niveau_vie, score, avatar) VALUES (?, ?, ?, ?, ?, ? )");
@@ -88,8 +84,8 @@ public class DBA_Joueur {
     }
     
         
-    // Update Joeur 
-    public void UpdateJoeur(int id_joueur, String username, double x, double y, int niveau_vie, int score, String avatar){
+    // Update Joueur 
+    public void UpdateJoueur(int id_joueur, String username, double x, double y, int niveau_vie, int score, String avatar){
         Connection connexion = SQL.getConnection();
         try {
              PreparedStatement requete = connexion.prepareStatement("UPDATE joueur SET username = ?, x = ?"
@@ -108,11 +104,31 @@ public class DBA_Joueur {
             ex.printStackTrace();
         }
     }
-    
+
 //    public static void main(String[] args){
 //        DBA_Joueur dba = new DBA_Joueur();
 //        dba.UpdateJoeur(6,"abdelhakim 2", 10, 10, 12, 12, "avatar");
 //   
-    }
+    public static void main(String[] args){
+        DBA_Joueur dba = new DBA_Joueur();
+        dba.UpdateJoeur(6,"abdelhakim 2", 10, 10, 12, 12, "avatar");
    
+    }  
+    
+}
+
+//     public static void main(String[] args) {
+//    // Création d'une instance de la classe DBA_Joueur
+//    DBA_Joueur dbaJoueur = new DBA_Joueur();
+//    // Appel de la méthode getJoueur pour récupérer les données du joueur avec id = 1
+//    List<Object> joueur = dbaJoueur.getJoueur(1);
+//    // Vérification du contenu de la liste et affichage
+//    if (!joueur.isEmpty() && joueur.size() > 1) {
+//        System.out.println("Données du joueur : " + joueur);
+//    } else {
+//        System.out.println(joueur.get(0)); // Message d'erreur
+//    }
+//}
+
+ 
 
