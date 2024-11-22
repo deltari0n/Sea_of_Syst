@@ -26,11 +26,11 @@ public class Mouette extends Entite {
     protected int posCibleY;
     private Random random;
     private boolean vaADroite;
-    private double oscilAmplitude = 20;
-    private double oscilVitesse = 0.05;
+    private double oscilAmplitude;
+    private double oscilVitesse;
     private boolean oscilEnHaut;
     private long debutJeu;
-    private long dureePartie = 10 * 60 * 1000;
+    private long dureePartie = 5 * 60 * 1000;
     private boolean mouetteVisible = false;
     private final long apparitionMouette;
 
@@ -43,6 +43,8 @@ public class Mouette extends Entite {
         } catch (IOException ex) {
             Logger.getLogger(Joueur.class.getName()).log(Level.SEVERE, null, ex);
         }
+        this.oscilAmplitude = 20;
+        this.oscilVitesse = 0.05;
         random = new Random();
         this.debutJeu = System.currentTimeMillis();
 <<<<<<< Updated upstream
