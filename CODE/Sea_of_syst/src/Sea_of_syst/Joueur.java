@@ -21,13 +21,14 @@ public class Joueur{
     
     //attributs et constructeur
     private BufferedImage sprite, coeur;
-    private double x, y;
+    private int x, y;
     private boolean gauche, droite, gravite, saut, clique;
     private int n;
     private int vie ; 
     
     // A RENOMMER listePosSaut !!!!!!!
     private ArrayList<Integer> listePosChute;
+    private boolean collision;
 
     public Joueur() {
         try {
@@ -64,6 +65,7 @@ public class Joueur{
     public void setBas(boolean bas) {
         this.gravite = bas;
     }
+     * @return 
     **/
     public int getX() {
         return x;

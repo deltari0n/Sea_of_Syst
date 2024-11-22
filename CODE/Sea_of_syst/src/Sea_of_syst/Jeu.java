@@ -83,7 +83,8 @@ public class Jeu {
         // 2. Mise à jour des autres éléments (objets, monstres, etc.)
         this.requin.miseAJour();
         
-        this.mouette.miseAJour(long tempsActuel);
+        this.mouette.miseAJour(tempsActuel);
+        
         for (int n=0; n<this.boulets.size(); n++){
             boulets.get(n).miseAJour();
             if (boulets.get(n).getTrajFini()){
