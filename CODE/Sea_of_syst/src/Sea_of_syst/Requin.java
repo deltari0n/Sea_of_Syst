@@ -34,7 +34,7 @@ public class Requin extends Entite{
             Logger.getLogger(Joueur.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.x = 500;
-        this.y = 0;
+        this.y = 600;
         random = new Random();
         posCible = random.nextInt(1200); // trouver un moyen de lire directement la taille de la fenetre pour remplacer 1200
         joueur = j;

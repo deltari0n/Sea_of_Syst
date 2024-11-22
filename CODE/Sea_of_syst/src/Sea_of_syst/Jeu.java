@@ -127,15 +127,13 @@ public class Jeu {
         if (collisionEntreJoueurEtRequin()){
             this.unJoueur.setX(200);
             this.unJoueur.setY(200);
+            this.unJoueur.setVie(unJoueur.getVie()-1);
         }
         if (collisionEntreMouetteEtBoulet()){
             this.mouette.setX(0);
         }
 
-        // 4. Diminution de la vie de joueur si il y a de collision 
-        if (collisionEntreJoueurEtRequin()){
-            this.unJoueur.setVie(unJoueur.getVie()-1);
-        }
+       
 
     }
     

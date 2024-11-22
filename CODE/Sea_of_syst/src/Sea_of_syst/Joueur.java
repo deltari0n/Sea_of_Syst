@@ -45,7 +45,7 @@ public class Joueur{
         this.saut = false;
         this.n = 0;
         this.clique = false;
-        this.vie=4; 
+        this.vie=5; 
      
         //Définit la trajectoire du saut
         this.listePosChute = new ArrayList<>(List.of(50, 50,50, 50,25,25,20,15,15,10,10,10,10));
