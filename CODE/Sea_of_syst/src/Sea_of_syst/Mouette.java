@@ -19,6 +19,9 @@ import java.util.Random;
  */
 public class Mouette extends Entite{
     
+    //__________________________________________________________________________
+    // attributs et constructeur
+    
     protected BufferedImage spriteDroiteHaut,spriteGaucheHaut,spriteDroiteBas,spriteGaucheBas;
     protected double x, y;
     protected int posCibleX;
@@ -46,54 +49,9 @@ public class Mouette extends Entite{
         vaADroite = posCibleX >= x;
     }
     
-    public void miseAJour() {
-        
-        if (this.posCibleX < this.x) {
-            if (Math.abs(this.posCibleX - this.x) < 7){
-                x -= Math.abs(this.posCibleX - this.x);
-            } else {
-                x -= 7;
-            }
-        }
-        if (this.posCibleX > this.x) {
-            if (Math.abs(this.posCibleX - this.x) < 7){
-                x += Math.abs(this.posCibleX - this.x);
-            } else {
-                x += 7;
-            }
-        }
-        if (this.posCibleX == this.x) {
-            //Random random = new Random();
-            posCibleX = (int) random.nextInt(1200);
-            vaADroite = posCibleX >= x;
-        } 
-        double ancienY = y;
-        y = posCibleY + oscilAmplitude * Math.sin(x * oscilVitesse);
-        oscilEnHaut = y <ancienY;
-    }
+    //__________________________________________________________________________
+    //Guetteur & setteur
     
-    
-    
-    
-    //guetteur et setteur
-    
-    public void rendu(Graphics2D contexte) {
-        if (vaADroite){
-            if(oscilEnHaut){
-                contexte.drawImage(this.spriteDroiteBas, (int) x, (int) y, null);
-            }
-            else{
-                contexte.drawImage(this.spriteDroiteHaut, (int) x, (int) y, null);
-            }
-        } else{
-            if(oscilEnHaut){
-                contexte.drawImage(this.spriteGaucheBas, (int) x, (int) y, null);
-            }
-            else{
-                contexte.drawImage(this.spriteGaucheHaut, (int) x, (int) y, null);
-            }
-        }
-    }
     public double getX() {
         return x;
     }
@@ -132,4 +90,53 @@ public class Mouette extends Entite{
     public double getHauteurGaucheBas() {
         return spriteGaucheBas.getWidth();
     }
+    
+    
+    //__________________________________________________________________________
+    //MàJ et rendu
+    
+    public void miseAJour() {
+        
+        if (this.posCibleX < this.x) {
+            if (Math.abs(this.posCibleX - this.x) < 7){
+                x -= Math.abs(this.posCibleX - this.x);
+            } else {
+                x -= 7;
+            }
+        }
+        if (this.posCibleX > this.x) {
+            if (Math.abs(this.posCibleX - this.x) < 7){
+                x += Math.abs(this.posCibleX - this.x);
+            } else {
+                x += 7;
+            }
+        }
+        if (this.posCibleX == this.x) {
+            //Random random = new Random();
+            posCibleX = (int) random.nextInt(1200);
+            vaADroite = posCibleX >= x;
+        } 
+        double ancienY = y;
+        y = posCibleY + oscilAmplitude * Math.sin(x * oscilVitesse);
+        oscilEnHaut = y <ancienY;
+    }
+    
+    public void rendu(Graphics2D contexte) {
+        if (vaADroite){
+            if(oscilEnHaut){
+                contexte.drawImage(this.spriteDroiteBas, (int) x, (int) y, null);
+            }
+            else{
+                contexte.drawImage(this.spriteDroiteHaut, (int) x, (int) y, null);
+            }
+        } else{
+            if(oscilEnHaut){
+                contexte.drawImage(this.spriteGaucheBas, (int) x, (int) y, null);
+            }
+            else{
+                contexte.drawImage(this.spriteGaucheHaut, (int) x, (int) y, null);
+            }
+        }
+    }
+    
 }

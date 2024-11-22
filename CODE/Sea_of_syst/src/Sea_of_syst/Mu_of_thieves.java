@@ -29,8 +29,9 @@ public class Mu_of_thieves {
         System.out.println("check1");
         tab2 = map.convTabToBinaire(tab1);
         System.out.println("check2");
-        map.ecritureFichierTabBinaire(tab2);
-        **/
+        * */
+        map.ecritureFichierTabBinaire(map.getMasque());
+        
     }
     
 }

@@ -23,8 +23,9 @@ public class Jeu {
     private Requin requin;
     private Mouette mouette;
     private ArrayList<Boulet_2_canon> boulets;
+    private Map map;
     
-    //constructeurs
+    //constructeur
     public Jeu() {
         try {
             this.decor = ImageIO.read(getClass().getResource("/ressources/ocean.png"));
@@ -35,8 +36,11 @@ public class Jeu {
         this.requin = new Requin(unJoueur);
         this.mouette = new Mouette();
         this.boulets = new ArrayList<>();
+        this.map = new Map();
     }
     
+    
+    //__________________________________________________________________________
     //getteurs et setteurs
     
     public Joueur getJoueur(){
@@ -47,10 +51,13 @@ public class Jeu {
         return this.boulets;
     }
     
-    //Methodes
+    
+    //__________________________________________________________________________
+    //Methodes de mise à jour
     
     public void rendu(Graphics2D contexte) {
         contexte.drawImage(this.decor, 0, 0, null);
+        this.map.rendu(contexte);
         // 2. Rendu des sprites
         this.unJoueur.rendu(contexte);
         this.requin.rendu(contexte);
@@ -60,9 +67,12 @@ public class Jeu {
         }
         // 3. Rendu des textes
     }
+    
     public void miseAJour() {
+        // Mise à jour de la map
+        
         // 1. Mise à jour de l’avatar en fonction des commandes des joueurs
-        this.unJoueur.miseAJour();
+        //this.unJoueur.miseAJour();
         // 2. Mise à jour des autres éléments (objets, monstres, etc.)
         this.requin.miseAJour();
         this.mouette.miseAJour();
@@ -73,7 +83,28 @@ public class Jeu {
                 n--;
             }
         }
-        // 3. Gérer les interactions (collisions et autres règles)
+        // gérer les collisions entre le joueur et la map
+        
+            // 1. Sauvegarde de la position actuelle du joueur
+        int oldX = unJoueur.getX();
+        int oldY = unJoueur.getY();
+
+            // 2. Mise à jour du joueur (calcule ses nouvelles positions potentielles)
+        unJoueur.miseAJour();
+        
+            // 3. Gestion des collisions horizontales
+        if (collisionEntreJoueurEtMap( unJoueur.getX(), oldY, 
+                unJoueur.getHauteur(), unJoueur.getLargeur(), map)){
+            unJoueur.setX(oldX); // Revenir à la position précédente si collision
+        }
+            // 4. Gestion des collisions verticales
+        
+        if (collisionEntreJoueurEtMap( unJoueur.getX(), unJoueur.getY(), 
+                unJoueur.getHauteur(), unJoueur.getLargeur(), map)){
+            unJoueur.setY(oldY); // Revenir à la position précédente si collision
+        }
+        
+        // 3. Gérer les interactions
         if (collisionEntreJoueurEtRequin()){
             this.unJoueur.setX(200);
             this.unJoueur.setY(200);
@@ -81,12 +112,25 @@ public class Jeu {
         if (collisionEntreMouetteEtBoulet()){
             this.mouette.setX(0);
         }
+        
+        
     }
+    
     public boolean estTermine() {
         // Renvoie vrai si la partie est terminée (gagnée ou perdue)
         return false;
     }
     
+    //_________________________________________________________________________
+    //implémentation des méthodes communes aux autres classes
+    
+    //implémentation des méthodes pour générer des masques de collision
+    
+    
+    
+    
+    
+    //__________________________________________________________________________
     //gestion des collisions
     public boolean collisionEntreJoueurEtRequin() {
         if ((requin.getX() >= unJoueur.getX() + unJoueur.getLargeur()) // trop à droite
@@ -99,7 +143,7 @@ public class Jeu {
         }
     }
     
-    //à retravailler parceque le code est dégueulasse
+    //peut etre à retravailler parceque le code est dégueulasse
     
     public boolean collisionEntreMouetteEtBoulet(){
         for(Boulet_2_canon boulet : boulets){
@@ -114,5 +158,38 @@ public class Jeu {
             }
         }
         return false; 
+    }
+    
+    
+    //gérer la collision entre le joueur et les boulets (que équipe ennemie ou tous ?)
+    public void collisionEntreJoueurEtBoulet(){
+        
+    }
+    
+    /** pour gérer la collision entre le joueur et la map on va faire du pixel
+    perfect avec des masques
+    On veut savoir en plus si les collisions
+    **/
+    public static boolean collisionEntreJoueurEtMap(int x, int y, int h, int l, Map map){
+        /** pour chaque pixel de la hitbox du joueur on va vérifier si sur la map
+         * il y'a un 1 c'est a dire une collision
+         */
+        for (int i = y; i<=( y + h); i++){
+            for (int j = x; j<=(x + l); j++){
+                if(map.getMasque()[i][j] == 1){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    
+    //même chose pour les boulets
+    public boolean collisionEntreBouletEtMap(){
+        
+        
+        
+        return false;
     }
 }

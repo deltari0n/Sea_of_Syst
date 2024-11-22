@@ -20,11 +20,11 @@ import javax.imageio.ImageIO;
  *
  * @author vruche
  */
-public class Map {
+public class Map{
     private BufferedImage map, mapModified;
     private int hauteur,largeur;
     private int[][][] tabImage;
-    private int[][] tabBinImage;
+    private int[][] masqueMap;
     
     public Map(){
         try {
@@ -35,7 +35,7 @@ public class Map {
         hauteur = map.getHeight();
         largeur = map.getWidth();
         tabImage = convPNGToTab(map);
-        tabBinImage = convTabToBinaire(tabImage);
+        masqueMap = creationMasque(tabImage);
     }
     
     
@@ -44,6 +44,10 @@ public class Map {
     
     public BufferedImage getMap(){
         return this.map;
+    }
+    
+    public int[][] getMasque(){
+        return this.masqueMap;
     }
     
     
@@ -72,20 +76,20 @@ public class Map {
     
     //méthode pour convertir les pixels de la map en 1 et 0 si pas de pixel(fond)
     //cela servira entre autre pour gérer les collisions
-    public static int[][] convTabToBinaire(int[][][] tab){
+    public static int[][] creationMasque(int[][][] tab){
         int h = tab.length;
         int l = tab[0].length;
-        int[][] tabBinaire = new int[h][l];
+        int[][] masque = new int[h][l];
         for(int i=0;i<h;i++){
             for(int j=0;j<l;j++){
                 if(tab[i][j][0]==0 && tab[i][j][1]==0 && tab[i][j][2]==0){
-                    tabBinaire[i][j] = 0;
+                    masque[i][j] = 0;
                 } else{
-                    tabBinaire[i][j] = 1;
+                    masque[i][j] = 1;
                 }
             }
         }
-        return tabBinaire;
+        return masque;
     }
     
     public void ecritureFichierTabBinaire(int[][] tab){
@@ -103,20 +107,20 @@ public class Map {
     public int[][] lectureFichiertabBinaire(String nomDuFichier){
         try{
             BufferedReader fichier = new BufferedReader(new FileReader(nomDuFichier));
-            tabBinImage = new int[hauteur][largeur];
+            masqueMap = new int[hauteur][largeur];
             for(int i=0; i<hauteur ;i++){
                 String ligne;
                 String eleLigne[];
                 ligne = fichier.readLine();
                 eleLigne = ligne.split(" ");
                 for(int j=0; j<largeur; j++){
-                    tabBinImage[i][j] = Integer.parseInt(eleLigne[j]);
+                    masqueMap[i][j] = Integer.parseInt(eleLigne[j]);
                 }
             }
             fichier.close();
         } catch (IOException e) {
         }
-        return tabBinImage;
+        return masqueMap;
     }
     
     
@@ -128,7 +132,7 @@ public class Map {
     }
     
     public void rendu(Graphics2D contexte) {
-        contexte.drawImage(this.mapModified, 0, 0, null);
+        contexte.drawImage(this.map, 0, 0, null);
     }
     
     

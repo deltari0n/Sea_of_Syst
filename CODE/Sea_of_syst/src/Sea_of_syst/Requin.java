@@ -20,7 +20,7 @@ import java.util.Random;
 public class Requin extends Entite{
     
     protected BufferedImage spriteDroite,spriteGauche;
-    protected double x, y;
+    protected int x, y;
     protected int posCible;
     private Random random;
     private Joueur joueur;
@@ -34,17 +34,37 @@ public class Requin extends Entite{
             Logger.getLogger(Joueur.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.x = 500;
-        this.y = 500;
+        this.y = 0;
         random = new Random();
         posCible = random.nextInt(1200); // trouver un moyen de lire directement la taille de la fenetre pour remplacer 1200
         joueur = j;
         vaADroite = posCible >= x;
     }
     
+    //__________________________________________________________________________
+    // Guetteur et setteur
+    
+    public int getX() {
+        return this.x;
+    }
+    public int getY() {
+        return this.y;
+    }
+    public int getLargeur() {
+        return spriteDroite.getHeight();
+    }
+    public int getHauteur() {
+        return spriteDroite.getWidth();
+    }
+    
+    
+    //_________________________________________________________________________
+    //MàJ et rendu
+    
     public void miseAJour() {
         
-        if (joueur.getY()>500){
-            posCible = (int) joueur.getX();
+        if (joueur.getY()>750){
+            posCible = joueur.getX();
             vaADroite = posCible >= x;
         }
         
@@ -64,33 +84,17 @@ public class Requin extends Entite{
         }
         if (this.posCible == this.x) {
             //Random random = new Random();
-            posCible = (int) random.nextInt(1200);
+            posCible = random.nextInt(1200);
             vaADroite = posCible >= x;
         } 
     }
     
-    
-    
-    
-    //guetteur et setteur
-    
     public void rendu(Graphics2D contexte) {
         if (vaADroite){
-            contexte.drawImage(this.spriteDroite, (int) x, (int) y, null);
+            contexte.drawImage(this.spriteDroite, x, y, null);
         } else{
-            contexte.drawImage(this.spriteGauche, (int) x, (int) y, null);
+            contexte.drawImage(this.spriteGauche, x, y, null);
         }
     }
-    public double getX() {
-        return x;
-    }
-    public double getY() {
-        return y;
-    }
-    public double getLargeur() {
-        return spriteDroite.getHeight();
-    }
-    public double getHauteur() {
-        return spriteDroite.getWidth();
-    }
+    
 }
