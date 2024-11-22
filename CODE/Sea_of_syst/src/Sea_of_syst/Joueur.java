@@ -20,11 +20,11 @@ import javax.imageio.ImageIO;
 public class Joueur{
     
     //attributs et constructeur
-    
-    private BufferedImage sprite;
-    private int x, y;
-    private boolean gauche, droite, gravite, saut, clique, collision;
+    private BufferedImage sprite, coeur;
+    private double x, y;
+    private boolean gauche, droite, gravite, saut, clique;
     private int n;
+    private int vie ; 
     
     // A RENOMMER listePosSaut !!!!!!!
     private ArrayList<Integer> listePosChute;
@@ -32,6 +32,7 @@ public class Joueur{
     public Joueur() {
         try {
             this.sprite = ImageIO.read(getClass().getResource("/ressources/Pirate_sprite.png"));
+            this.coeur = ImageIO.read(getClass().getResource("/ressources/coeur.png"));
         } catch (IOException ex) {
             Logger.getLogger(Joueur.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -42,8 +43,8 @@ public class Joueur{
         this.saut = false;
         this.n = 0;
         this.clique = false;
-        this.collision = false;
-        
+        this.vie=5; 
+     
         //Définit la trajectoire du saut
         this.listePosChute = new ArrayList<>(List.of(50, 50,50, 50,25,25,20,15,15,10,10,10,10));
     }
@@ -90,12 +91,15 @@ public class Joueur{
     //__________________________________________________________________________
     //VIE ET AUTRES PROPRIETE JOUEUR
     
-    public void vie(){
-        
-        
+
+    public int getVie(){
+        return vie;
+
     }
     
-    
+    public void setVie(int ptDeVie) {
+        vie = ptDeVie;
+    }
     
     
     
@@ -104,6 +108,7 @@ public class Joueur{
     
     //mise a jour des déplacements horizontaux
     public void miseAJour() {
+
         if (this.gauche) {
             x -= 5;
         }
@@ -175,7 +180,14 @@ public class Joueur{
     }
     
     public void rendu(Graphics2D contexte) {
-        contexte.drawImage(this.sprite, x, y, null);
+
+        //affichage du sprite du joueur
+        contexte.drawImage(this.sprite, (int) x, (int) y, null);
+        //affichage de son nombre de coeur
+        for (int i = 0; i < vie; i++) {
+            contexte.drawImage(coeur, 10 + (i * 40), 50, 30, 30, null); 
+        }
+
     }
     
 }
