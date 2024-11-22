@@ -48,66 +48,8 @@ public class Mouette extends Entite {
         this.apparitionMouette = debutJeu + random.nextInt((int) dureePartie);
     }
 
-
-    public void miseAJour(long tempsActuel) {
-        if (!mouetteVisible && tempsActuel >= apparitionMouette) {
-            mouetteVisible = true;
-            this.x = 150;
-            this.y = 150;
-            random = new Random();
-            posCibleX = random.nextInt(1200); // trouver un moyen de lire directement la taille de la fenetre pour remplacer 1200
-            posCibleY = random.nextInt(50) + 150;
-            vaADroite = posCibleX >= x;
-        }
-
-        if (mouetteVisible) {
-            if (this.posCibleX < this.x) {
-                if (Math.abs(this.posCibleX - this.x) < 7) {
-                    x -= Math.abs(this.posCibleX - this.x);
-                } else {
-                    x -= 7;
-                }
-            }
-            if (this.posCibleX > this.x) {
-                if (Math.abs(this.posCibleX - this.x) < 7) {
-                    x += Math.abs(this.posCibleX - this.x);
-                } else {
-                    x += 7;
-                }
-            }
-            if (this.posCibleX == this.x) {
-                //Random random = new Random();
-                posCibleX = (int) random.nextInt(1200);
-                vaADroite = posCibleX >= x;
-            }
-            double ancienY = y;
-            y = posCibleY + oscilAmplitude * Math.sin(x * oscilVitesse);
-            oscilEnHaut = y < ancienY;
-        }
-    }
-
-    
-    
-    
     //guetteur et setteur
     
-    public void rendu(Graphics2D contexte) {
-        if (vaADroite) {
-            if (oscilEnHaut) {
-                contexte.drawImage(this.spriteDroiteBas, (int) x, (int) y, null);
-            } else {
-                contexte.drawImage(this.spriteDroiteHaut, (int) x, (int) y, null);
-            }
-        } else {
-            if (oscilEnHaut) {
-                contexte.drawImage(this.spriteGaucheBas, (int) x, (int) y, null);
-            } else {
-                contexte.drawImage(this.spriteGaucheHaut, (int) x, (int) y, null);
-            }
-        }
-    }
-
-
     public double getX() {
         return x;
     }
@@ -160,30 +102,41 @@ public class Mouette extends Entite {
     //__________________________________________________________________________
     //MàJ et rendu
     
-    public void miseAJour() {
-        
-        if (this.posCibleX < this.x) {
-            if (Math.abs(this.posCibleX - this.x) < 7){
-                x -= Math.abs(this.posCibleX - this.x);
-            } else {
-                x -= 7;
-            }
-        }
-        if (this.posCibleX > this.x) {
-            if (Math.abs(this.posCibleX - this.x) < 7){
-                x += Math.abs(this.posCibleX - this.x);
-            } else {
-                x += 7;
-            }
-        }
-        if (this.posCibleX == this.x) {
-            //Random random = new Random();
-            posCibleX = (int) random.nextInt(1200);
+    public void miseAJour(long tempsActuel) {
+        if (!mouetteVisible && tempsActuel >= apparitionMouette) {
+            mouetteVisible = true;
+            this.x = 150;
+            this.y = 150;
+            random = new Random();
+            posCibleX = random.nextInt(1200); // trouver un moyen de lire directement la taille de la fenetre pour remplacer 1200
+            posCibleY = random.nextInt(50) + 150;
             vaADroite = posCibleX >= x;
-        } 
-        double ancienY = y;
-        y = posCibleY + oscilAmplitude * Math.sin(x * oscilVitesse);
-        oscilEnHaut = y <ancienY;
+        }
+
+        if (mouetteVisible) {
+            if (this.posCibleX < this.x) {
+                if (Math.abs(this.posCibleX - this.x) < 7) {
+                    x -= Math.abs(this.posCibleX - this.x);
+                } else {
+                    x -= 7;
+                }
+            }
+            if (this.posCibleX > this.x) {
+                if (Math.abs(this.posCibleX - this.x) < 7) {
+                    x += Math.abs(this.posCibleX - this.x);
+                } else {
+                    x += 7;
+                }
+            }
+            if (this.posCibleX == this.x) {
+                //Random random = new Random();
+                posCibleX = (int) random.nextInt(1200);
+                vaADroite = posCibleX >= x;
+            }
+            double ancienY = y;
+            y = posCibleY + oscilAmplitude * Math.sin(x * oscilVitesse);
+            oscilEnHaut = y < ancienY;
+        }
     }
     
     public void rendu(Graphics2D contexte) {

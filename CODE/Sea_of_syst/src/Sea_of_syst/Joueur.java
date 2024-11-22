@@ -29,6 +29,7 @@ public class Joueur{
     
     // A RENOMMER listePosSaut !!!!!!!
     private ArrayList<Integer> listePosChute;
+    private boolean collision;
 
     public Joueur() {
         try {
@@ -65,6 +66,7 @@ public class Joueur{
     public void setBas(boolean bas) {
         this.gravite = bas;
     }
+     * @return 
     **/
     public int getX() {
         return x;
