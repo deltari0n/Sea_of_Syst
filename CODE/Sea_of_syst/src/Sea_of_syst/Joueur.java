@@ -22,14 +22,13 @@ public class Joueur{
     //attributs et constructeur
     private BufferedImage sprite, coeur,coeurG ;
     private int x, y;
-    private boolean gauche, droite, gravite, saut, collision , clique;
+    private boolean gauche, droite, gravite, saut, clique, collision, estAuSol;
     private int n;
     private int vie ; 
     
     
     // A RENOMMER listePosSaut !!!!!!!
     private ArrayList<Integer> listePosChute;
-
 
     public Joueur() {
         try {
@@ -39,7 +38,7 @@ public class Joueur{
         } catch (IOException ex) {
             Logger.getLogger(Joueur.class.getName()).log(Level.SEVERE, null, ex);
         }
-        this.x = 500;
+        this.x = 800;
         this.y = 300;
         this.gauche = false;
         this.droite = false;
@@ -62,6 +61,9 @@ public class Joueur{
     }
     public void setSaut(boolean saut) {
         this.saut = saut;
+    }
+    public void setEstAuSol(boolean sol){
+        this.estAuSol = sol;
     }
     /**
     public void setBas(boolean bas) {
@@ -110,7 +112,7 @@ public class Joueur{
     //__________________________________________________________________________
     //MàJ et rendu
     
-    //mise a jour des déplacements horizontaux
+    //mise a jour des déplacements
     public void miseAJour() {
 
         if (this.gauche) {
@@ -143,45 +145,19 @@ public class Joueur{
         }
         
         //pour gérer le saut du joueur
-        //IMPLEMENTER LES COLLISIONS
-        if (this.saut && y>=700) {
+        
+        if (saut && estAuSol) {
             if (n <= listePosChute.size()){
                 y -= listePosChute.get(n);
             }
             else{
                 n=0;
+                saut = false;
             }
         }
         
     }
     
-    //mise a jour des déplacements verticaux
-    public void miseAJourPart2(){
-        //pour gérer la chute du joueur
-        /** On va faire chuter le joueur si sa position est supérieur au niveau
-         * de l'océan en vérifiant qu'il ne rentre pas en collision avec un obstacle
-         */
-        if (y <700) {
-            if (5> Math.abs( y - 700)){
-                y+= Math.abs( y - 700) ;
-            } 
-            else {
-                y += 5;
-            }
-        }
-        
-        //pour gérer le saut du joueur
-        //IMPLEMENTER LES COLLISIONS
-        if (this.saut && y>=700) {
-            if (n <= listePosChute.size()){
-                y -= listePosChute.get(n);
-            }
-            else{
-                n=0;
-            }
-        }
-        
-    }
     
     public void rendu(Graphics2D contexte) {
 

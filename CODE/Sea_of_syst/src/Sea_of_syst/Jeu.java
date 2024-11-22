@@ -78,21 +78,8 @@ public class Jeu {
     public void miseAJour() {
         // Mise à jour de la map
         
-        // 1. Mise à jour de l’avatar en fonction des commandes des joueurs
-        //this.unJoueur.miseAJour();
-        // 2. Mise à jour des autres éléments (objets, monstres, etc.)
-        this.requin.miseAJour();
         
-        this.mouette.miseAJour(tempsActuel);
-        
-        for (int n=0; n<this.boulets.size(); n++){
-            boulets.get(n).miseAJour();
-            if (boulets.get(n).getTrajFini()){
-                boulets.remove(n);
-                n--;
-            }
-        }
-        // gérer les collisions entre le joueur et la map
+        //1. mises à jour de l'avatar en fonction des collisions avec la map
         
             // 1. Sauvegarde de la position actuelle du joueur
         int oldX = unJoueur.getX();
@@ -112,6 +99,29 @@ public class Jeu {
                 unJoueur.getHauteur(), unJoueur.getLargeur(), map)){
             unJoueur.setY(oldY); // Revenir à la position précédente si collision
         }
+        
+        //on va vérifier si il y'a du sol en deddous du joueur pour pouvoir sauter
+        if (collisionEntreJoueurEtMap(unJoueur.getX(), (unJoueur.getY() + 5), 
+                unJoueur.getHauteur(), unJoueur.getLargeur(), map) || (unJoueur.getY() + 5) >= 700){ // Vérifie une collision juste en dessous
+            unJoueur.setEstAuSol(true);
+        } else {
+            unJoueur.setEstAuSol(false);
+        }
+        
+        
+        // 2. Mise à jour des autres éléments (objets, monstres, etc.)
+        this.requin.miseAJour();
+        
+        this.mouette.miseAJour(tempsActuel);
+        
+        for (int n=0; n<this.boulets.size(); n++){
+            boulets.get(n).miseAJour();
+            if (boulets.get(n).getTrajFini()){
+                boulets.remove(n);
+                n--;
+            }
+        }
+        
         
         // 3. Gérer les interactions
         if (collisionEntreJoueurEtRequin()){

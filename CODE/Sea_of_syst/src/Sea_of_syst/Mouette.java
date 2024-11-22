@@ -25,7 +25,7 @@ public class Mouette extends Entite {
     protected int posCibleX;
     protected int posCibleY;
     private Random random;
-    private Boolean vaADroite;
+    private boolean vaADroite;
     private double oscilAmplitude = 20;
     private double oscilVitesse = 0.05;
     private boolean oscilEnHaut;
@@ -45,7 +45,8 @@ public class Mouette extends Entite {
         }
         random = new Random();
         this.debutJeu = System.currentTimeMillis();
-        this.apparitionMouette = debutJeu + random.nextInt((int) dureePartie);
+        this.apparitionMouette = 2;
+        vaADroite = posCibleX >= x;
     }
 
     //guetteur et setteur
