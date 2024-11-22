@@ -22,20 +22,20 @@ public class Joueur{
     //attributs et constructeur
     private BufferedImage sprite, coeur,coeurG ;
     private int x, y;
-    private boolean gauche, droite, gravite, saut,collision , clique;
+    private boolean gauche, droite, gravite, saut, collision , clique;
     private int n;
     private int vie ; 
     
     
     // A RENOMMER listePosSaut !!!!!!!
     private ArrayList<Integer> listePosChute;
-    private boolean collision;
+
 
     public Joueur() {
         try {
             this.sprite = ImageIO.read(getClass().getResource("/ressources/Pirate_sprite.png"));
             this.coeur = ImageIO.read(getClass().getResource("/ressources/coeur.png"));
-            this.coeurG = ImageIO.read(getClass().getResource("/ressources/coeurG.png"));
+            this.coeurG = ImageIO.read(getClass().getResource("/ressources/coeurGr.png"));
         } catch (IOException ex) {
             Logger.getLogger(Joueur.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -46,7 +46,7 @@ public class Joueur{
         this.saut = false;
         this.n = 0;
         this.clique = false;
-        this.vie=5; 
+        this.vie=4; 
      
         //Définit la trajectoire du saut
         this.listePosChute = new ArrayList<>(List.of(50, 50,50, 50,25,25,20,15,15,10,10,10,10));
