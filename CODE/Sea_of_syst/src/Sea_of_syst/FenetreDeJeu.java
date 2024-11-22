@@ -133,7 +133,7 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener,
         if (event.getKeyCode() == event.VK_LEFT  || event.getKeyCode() == 81){ //aller a gauche
             this.jeu.getJoueur().setGauche(false);
         }
-        if (event.getKeyCode() == event.VK_UP){ //aller a gauche
+        if (event.getKeyCode() == event.VK_UP){ //sauter
             this.jeu.getJoueur().setSaut(false);
         }
         /**

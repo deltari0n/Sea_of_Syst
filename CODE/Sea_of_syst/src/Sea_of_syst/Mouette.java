@@ -25,7 +25,7 @@ public class Mouette extends Entite {
     protected int posCibleX;
     protected int posCibleY;
     private Random random;
-    private Boolean vaADroite;
+    private boolean vaADroite;
     private double oscilAmplitude = 20;
     private double oscilVitesse = 0.05;
     private boolean oscilEnHaut;
@@ -45,7 +45,12 @@ public class Mouette extends Entite {
         }
         random = new Random();
         this.debutJeu = System.currentTimeMillis();
+<<<<<<< Updated upstream
+        this.apparitionMouette = 2;
+=======
         this.apparitionMouette = debutJeu + random.nextInt((int) dureePartie);
+>>>>>>> Stashed changes
+        vaADroite = posCibleX >= x;
     }
 
     //guetteur et setteur
@@ -103,6 +108,7 @@ public class Mouette extends Entite {
     //MàJ et rendu
     
     public void miseAJour(long tempsActuel) {
+        
         if (!mouetteVisible && tempsActuel >= apparitionMouette) {
             mouetteVisible = true;
             this.x = 150;
@@ -136,6 +142,7 @@ public class Mouette extends Entite {
             double ancienY = y;
             y = posCibleY + oscilAmplitude * Math.sin(x * oscilVitesse);
             oscilEnHaut = y < ancienY;
+            vaADroite = posCibleX >= x;
         }
     }
     
