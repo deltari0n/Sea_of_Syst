@@ -9,6 +9,9 @@ import Sea_of_syst.SQL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -17,25 +20,38 @@ import java.sql.SQLException;
 public class DBA_Joueur {
     
     // Select joueur
-    public String getJoueur(int id_joueur){
-        Connection connexion = SQL.getConnection();
-        try {
-            PreparedStatement requete = connexion.prepareStatement("SELECT username, x, y, niveau_vie, score, avatar FROM joueur WHERE id_joueur = ?");
-            requete.setInt(1, id_joueur);
-            ResultSet resultat = requete.executeQuery();
-            requete.close();
-            connexion.close();
-            if (resultat.next()){
-                return resultat.getString(1) + " " + resultat.getDouble(2)+ " " + resultat.getDouble(3) + " " + resultat.getInt(4)
-                        + " " + resultat.getInt(5) + " " + resultat.getString(6);
-            }else{
-                return "Impossible de trouvé le joueur";
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
+
+    public List<Object> getJoueur(int id_joueur) {
+    Connection connexion = SQL.getConnection();
+    List<Object> joueurData = new ArrayList<>();
+    
+    try {
+        PreparedStatement requete = connexion.prepareStatement(
+            "SELECT username, x, y, niveau_vie, score, avatar FROM joueur WHERE id_joueur = ?");
+        requete.setInt(1, id_joueur);
+        ResultSet resultat = requete.executeQuery();
+        
+        if (resultat.next()) {
+            joueurData.add(resultat.getString("username"));  // Nom d'utilisateur
+            joueurData.add(resultat.getDouble("x"));         // Coordonnée x
+            joueurData.add(resultat.getDouble("y"));         // Coordonnée y
+            joueurData.add(resultat.getInt("niveau_vie"));   // Niveau de vie
+            joueurData.add(resultat.getInt("score"));        // Score
+            joueurData.add(resultat.getString("avatar"));    // Avatar
+        } else {
+            joueurData.add("Impossible de trouver le joueur");
         }
-        return null;
+
+        // Fermer la requête et la connexion
+        resultat.close();
+        requete.close();
+        connexion.close();
+    } catch (SQLException ex) {
+        ex.printStackTrace();
     }
+    return joueurData;
+}
+
     
     // Delete Joeur 
     public void DeleteJoeur(int id_joueur){
