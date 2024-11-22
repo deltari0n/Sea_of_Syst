@@ -22,9 +22,10 @@ public class Joueur{
     //attributs et constructeur
     private BufferedImage sprite, coeur;
     private int x, y;
-    private boolean gauche, droite, gravite, saut, clique;
+    private boolean gauche, droite, gravite, saut,collision , clique;
     private int n;
     private int vie ; 
+    
     
     // A RENOMMER listePosSaut !!!!!!!
     private ArrayList<Integer> listePosChute;

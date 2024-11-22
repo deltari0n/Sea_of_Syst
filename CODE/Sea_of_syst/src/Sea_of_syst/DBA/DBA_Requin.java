@@ -28,7 +28,7 @@ public class DBA_Requin {
             if (resultat.next()){
                 return resultat.getDouble(1)+ " " + resultat.getDouble(2);       
             }else{
-                return "Impossible de trouvé le Requin";
+                return "Impossible de trouver le Requin";
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
