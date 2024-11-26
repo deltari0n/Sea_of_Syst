@@ -47,11 +47,8 @@ public class Mouette extends Entite {
         this.oscilVitesse = 0.05;
         random = new Random();
         this.debutJeu = System.currentTimeMillis();
-<<<<<<< Updated upstream
+
         this.apparitionMouette = 2;
-=======
-        this.apparitionMouette = debutJeu + random.nextInt((int) dureePartie);
->>>>>>> Stashed changes
         vaADroite = posCibleX >= x;
     }
 
