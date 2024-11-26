@@ -34,7 +34,9 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener,
     private JLabel jLabel1;
     private Jeu jeu;
     private Timer timer;
-    private int elapsedTime; // Temps écoulé en secondes
+    private int elapsedTime; // Temps écoulé en seconde
+    private int minutes ; 
+    private int secondes ;
    
 
     public FenetreDeJeu() { 
@@ -64,6 +66,8 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener,
         
         // Initialisation du temps écoulé
         this.elapsedTime = 0;
+        this.minutes= 0;
+        this.secondes = 0;
         
         
         
@@ -82,8 +86,8 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener,
         contexte.fillRect(10, 10, 150, 30); // Dessiner un rectangle pour le fond du timer
 
         // Calcul du temps écoulé en minutes et secondes
-        int minutes = (elapsedTime*40/1000) / 60; // Convertir le temps en minutes
-        int secondes = (elapsedTime*40/1000) % 60; // Récupérer les secondes restantes
+        minutes = (elapsedTime*40/1000) / 60; // Convertir le temps en minutes
+        secondes = (elapsedTime*40/1000) % 60; // Récupérer les secondes restantes
 
         // Formatage du texte du timer
         String formattedTime = String.format("Temps : %02d:%02d", minutes, secondes); // Format: "Temps : 01:30"
