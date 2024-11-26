@@ -25,7 +25,8 @@ public class Joueur{
     private boolean gauche, droite, gravite, saut, clique, collision, estAuSol,estMort;
     private int n;
     private int vie ; 
-    
+    private int idJoueur;
+    private String pseudo, avatar;
     
     // A RENOMMER listePosSaut !!!!!!!
     private ArrayList<Integer> listePosChute;
@@ -50,6 +51,22 @@ public class Joueur{
      
         //Définit la trajectoire du saut
         this.listePosChute = new ArrayList<>(List.of(50, 50,50, 50,25,25,20,15,15,10,10,10,10));
+    }
+    
+    //constructeur pour les autres joueurs
+    public Joueur(int id_joueur, String username, int xJ, int yJ, int niveau_vie, String avatar){
+        try {
+            this.sprite = ImageIO.read(getClass().getResource("/ressources/Pirate_sprite.png"));
+        } catch (IOException ex) {
+            Logger.getLogger(Joueur.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        this.idJoueur = id_joueur;
+        this.pseudo = username;
+        this.x = xJ;
+        this.y = yJ;
+        this.vie = niveau_vie;
+        this.avatar = avatar;
+        
     }
     
     //__________________________________________________________________________

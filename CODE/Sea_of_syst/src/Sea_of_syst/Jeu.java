@@ -4,13 +4,16 @@
  */
 package Sea_of_syst;
 
+import Sea_of_syst.DBA.*;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 import javax.imageio.ImageIO;
+//import Sea_of_syst.DBA;
 
 /**
  *
@@ -25,7 +28,12 @@ public class Jeu {
     private ArrayList<Boulet_2_canon> boulets;
     private Map map;
     private long tempsActuel = System.currentTimeMillis();
-
+    private DBA_Joueur dbaJoueur;
+    private DBA_Mouette dbaMouette;
+    private DBA_Requin dbaRequin;
+    private DBA_Boulet_2_Canon dbaBoulets;
+    private int idJoueur;
+    private List<Joueur> joueurs;
     
     //constructeur
     public Jeu() {
@@ -39,6 +47,11 @@ public class Jeu {
         this.mouette = new Mouette();
         this.boulets = new ArrayList<>();
         this.map = new Map();
+        //Initialisation des Base de données
+        this.dbaJoueur = new DBA_Joueur();
+        this.dbaJoueur.insertJoueur("val", unJoueur.getX(), unJoueur.getY(), unJoueur.getVie(), 0, "ok");
+        idJoueur = this.dbaJoueur.getIdJoueur("val");
+        System.out.println(idJoueur);
     }
     
     
@@ -61,9 +74,18 @@ public class Jeu {
         contexte.drawImage(this.decor, 0, 0, null);
         this.map.rendu(contexte);
         // 2. Rendu des sprites
+
         if(!unJoueur.estMort()){
             this.unJoueur.rendu(contexte);
         }
+
+        
+        // rendu des autres Joueur
+        joueurs = dbaJoueur.getTousLesJoueursSaufUn(idJoueur);
+        for (Joueur j : joueurs){
+            j.rendu(contexte);
+        }
+        
         this.requin.rendu(contexte);
         this.mouette.rendu(contexte);
         for (Boulet_2_canon boule : boulets){
@@ -82,6 +104,7 @@ public class Jeu {
         
         if (!unJoueur.estMort()){
             //1. mises à jour de l'avatar en fonction des collisions avec la map
+
 
                 // 1. Sauvegarde de la position actuelle du joueur
             int oldX = unJoueur.getX();
@@ -109,8 +132,37 @@ public class Jeu {
             } else {
                 unJoueur.setEstAuSol(false);
             }
-        }
+
+            // 2. Mise à jour du joueur (calcule ses nouvelles positions potentielles)
+            unJoueur.miseAJour();
         
+            // 3. Gestion des collisions horizontales en prenant en compte les limites
+            // de la map
+
+            if ((unJoueur.getX()+unJoueur.getLargeur()) < map.getLargeur()){
+                if (collisionEntreJoueurEtMap( unJoueur.getX(), oldY, 
+                    unJoueur.getHauteur(), unJoueur.getLargeur(), map)){
+                unJoueur.setX(oldX); // Revenir à la position précédente si collision
+                } 
+            } else{
+                unJoueur.setX(oldX);
+            }
+            // 4. Gestion des collisions verticales
+        
+            if (collisionEntreJoueurEtMap( unJoueur.getX(), unJoueur.getY(), 
+                    unJoueur.getHauteur(), unJoueur.getLargeur(), map)){
+                unJoueur.setY(oldY); // Revenir à la position précédente si collision
+            }
+        
+        //on va vérifier si il y'a du sol en deddous du joueur pour pouvoir sauter
+            if (collisionEntreJoueurEtMap(unJoueur.getX(), (unJoueur.getY() + 5), 
+                    unJoueur.getHauteur(), unJoueur.getLargeur(), map) || (unJoueur.getY() + 5) >= 700){ // Vérifie une collision juste en dessous
+                unJoueur.setEstAuSol(true);
+            } else {
+                unJoueur.setEstAuSol(false);
+
+            }
+        }
         
         // 2. Mise à jour des autres éléments (objets, monstres, etc.)
         this.requin.miseAJour();
@@ -138,6 +190,7 @@ public class Jeu {
         if (collisionEntreMouetteEtBoulet()){
             this.mouette.setX(0);
         }
+
         if (collisionEntreJoueurEtMouette()) {
             // Si une collision est détectée, on augmente la vie du joueur
             unJoueur.setVie(unJoueur.getVie() + 1);  // Augmenter la vie du joueur de 1
@@ -146,9 +199,14 @@ public class Jeu {
             mouette.setX(0);  // Vous pouvez ajuster cette valeur pour repositionner la mouette comme vous le souhaitez
             mouette.setY(0);  // Ou ajuster la position de la mouette en fonction de votre logique
         }
-}
 
-       
+
+        
+        
+        //4. Envoie des données dans la base des données
+        this.dbaJoueur.updateJoueur(idJoueur, "val", unJoueur.getX(), unJoueur.getY(), unJoueur.getVie(), 0, "ok");
+
+    }
 
 
     
@@ -156,14 +214,6 @@ public class Jeu {
         // Renvoie vrai si la partie est terminée (gagnée ou perdue)
         return false;
     }
-    
-    //_________________________________________________________________________
-    //implémentation des méthodes communes aux autres classes
-    
-    //implémentation des méthodes pour générer des masques de collision
-    
-    
-    
     
     
     //__________________________________________________________________________

@@ -50,7 +50,13 @@ public class Map{
         return this.masqueMap;
     }
     
+    public int getLargeur(){
+        return this.largeur;
+    }
     
+    public int getHauteur(){
+        return this.hauteur;
+    }
     //__________________________________________________________________________
     //EXTRACTION ET ECRITURE DE L'AFFICHAGE ET DES HITBOX DE LA MAP
     

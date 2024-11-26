@@ -17,7 +17,7 @@ import java.util.Random;
  *
  * @author vruche
  */
-public class Requin extends Entite{
+public class Requin{
     
     protected BufferedImage spriteDroite,spriteGauche;
     protected int x, y;
