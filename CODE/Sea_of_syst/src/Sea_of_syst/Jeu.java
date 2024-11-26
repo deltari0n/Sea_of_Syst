@@ -138,10 +138,19 @@ public class Jeu {
         if (collisionEntreMouetteEtBoulet()){
             this.mouette.setX(0);
         }
+        if (collisionEntreJoueurEtMouette()) {
+            // Si une collision est détectée, on augmente la vie du joueur
+            unJoueur.setVie(unJoueur.getVie() + 1);  // Augmenter la vie du joueur de 1
+
+            // Après la collision, on déplace la mouette pour éviter les collisions répétées immédiates
+            mouette.setX(0);  // Vous pouvez ajuster cette valeur pour repositionner la mouette comme vous le souhaitez
+            mouette.setY(0);  // Ou ajuster la position de la mouette en fonction de votre logique
+        }
+}
 
        
 
-    }
+
     
     public boolean estTermine() {
         // Renvoie vrai si la partie est terminée (gagnée ou perdue)
@@ -171,6 +180,19 @@ public class Jeu {
         }
     }
     
+    //les collisions entre joueur et Mouette c'est un bonous qui augmente duree de vie
+    
+    public boolean collisionEntreJoueurEtMouette() {
+        // Vérification des coordonnées pour savoir si les hitboxes du joueur et de la mouette se chevauchent
+        if ((mouette.getX() >= unJoueur.getX() + unJoueur.getLargeur()) // trop à droite
+                || ( mouette.getX() + mouette.getLargeurDroiteHaut()<= unJoueur.getX()) // trop à gauche
+                || (mouette.getY() >= unJoueur.getY() + unJoueur.getHauteur()) // trop en bas
+                || (mouette.getY() + mouette.getHauteurDroiteHaut()<= unJoueur.getY())) { // trop en haut
+            return false;  // Pas de collision
+        } else {
+            return true;   // Collision détectée
+        }
+}
     //peut etre à retravailler parceque le code est dégueulasse
     
     public boolean collisionEntreMouetteEtBoulet(){
