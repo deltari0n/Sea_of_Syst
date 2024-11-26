@@ -61,7 +61,9 @@ public class Jeu {
         contexte.drawImage(this.decor, 0, 0, null);
         this.map.rendu(contexte);
         // 2. Rendu des sprites
-        this.unJoueur.rendu(contexte);
+        if(!unJoueur.estMort()){
+            this.unJoueur.rendu(contexte);
+        }
         this.requin.rendu(contexte);
         this.mouette.rendu(contexte);
         for (Boulet_2_canon boule : boulets){
@@ -78,34 +80,35 @@ public class Jeu {
     public void miseAJour() {
         // Mise à jour de la map
         
-        
-        //1. mises à jour de l'avatar en fonction des collisions avec la map
-        
-            // 1. Sauvegarde de la position actuelle du joueur
-        int oldX = unJoueur.getX();
-        int oldY = unJoueur.getY();
+        if (!unJoueur.estMort()){
+            //1. mises à jour de l'avatar en fonction des collisions avec la map
 
-            // 2. Mise à jour du joueur (calcule ses nouvelles positions potentielles)
-        unJoueur.miseAJour();
-        
-            // 3. Gestion des collisions horizontales
-        if (collisionEntreJoueurEtMap( unJoueur.getX(), oldY, 
-                unJoueur.getHauteur(), unJoueur.getLargeur(), map)){
-            unJoueur.setX(oldX); // Revenir à la position précédente si collision
-        }
-            // 4. Gestion des collisions verticales
-        
-        if (collisionEntreJoueurEtMap( unJoueur.getX(), unJoueur.getY(), 
-                unJoueur.getHauteur(), unJoueur.getLargeur(), map)){
-            unJoueur.setY(oldY); // Revenir à la position précédente si collision
-        }
-        
-        //on va vérifier si il y'a du sol en deddous du joueur pour pouvoir sauter
-        if (collisionEntreJoueurEtMap(unJoueur.getX(), (unJoueur.getY() + 5), 
-                unJoueur.getHauteur(), unJoueur.getLargeur(), map) || (unJoueur.getY() + 5) >= 700){ // Vérifie une collision juste en dessous
-            unJoueur.setEstAuSol(true);
-        } else {
-            unJoueur.setEstAuSol(false);
+                // 1. Sauvegarde de la position actuelle du joueur
+            int oldX = unJoueur.getX();
+            int oldY = unJoueur.getY();
+
+                // 2. Mise à jour du joueur (calcule ses nouvelles positions potentielles)
+            unJoueur.miseAJour();
+
+                // 3. Gestion des collisions horizontales
+            if (collisionEntreJoueurEtMap( unJoueur.getX(), oldY, 
+                    unJoueur.getHauteur(), unJoueur.getLargeur(), map)){
+                unJoueur.setX(oldX); // Revenir à la position précédente si collision
+            }
+                // 4. Gestion des collisions verticales
+
+            if (collisionEntreJoueurEtMap( unJoueur.getX(), unJoueur.getY(), 
+                    unJoueur.getHauteur(), unJoueur.getLargeur(), map)){
+                unJoueur.setY(oldY); // Revenir à la position précédente si collision
+            }
+
+            //on va vérifier si il y'a du sol en deddous du joueur pour pouvoir sauter
+            if (collisionEntreJoueurEtMap(unJoueur.getX(), (unJoueur.getY() + 5), 
+                    unJoueur.getHauteur(), unJoueur.getLargeur(), map) || (unJoueur.getY() + 5) >= 700){ // Vérifie une collision juste en dessous
+                unJoueur.setEstAuSol(true);
+            } else {
+                unJoueur.setEstAuSol(false);
+            }
         }
         
         
@@ -114,11 +117,14 @@ public class Jeu {
         
         this.mouette.miseAJour(tempsActuel);
         
-        for (int n=0; n<this.boulets.size(); n++){
-            boulets.get(n).miseAJour();
-            if (boulets.get(n).getTrajFini()){
-                boulets.remove(n);
-                n--;
+        
+        if(unJoueur.estMort()){
+            for (int n=0; n<this.boulets.size(); n++){
+                boulets.get(n).miseAJour();
+                if (boulets.get(n).getTrajFini()){
+                    boulets.remove(n);
+                    n--;
+                }
             }
         }
         

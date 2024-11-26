@@ -82,8 +82,8 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener,
         contexte.fillRect(10, 10, 150, 30); // Dessiner un rectangle pour le fond du timer
 
         // Calcul du temps écoulé en minutes et secondes
-        int minutes = elapsedTime / 60; // Convertir le temps en minutes
-        int secondes = elapsedTime % 60; // Récupérer les secondes restantes
+        int minutes = (elapsedTime*40/1000) / 60; // Convertir le temps en minutes
+        int secondes = (elapsedTime*40/1000) % 60; // Récupérer les secondes restantes
 
         // Formatage du texte du timer
         String formattedTime = String.format("Temps : %02d:%02d", minutes, secondes); // Format: "Temps : 01:30"
@@ -153,8 +153,10 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener,
     @Override
     //MouseClicked est la méthode que vous devez compléter si vous avez une action à faire à chaque détection de clic !
     public void mouseClicked(MouseEvent event){
-        this.jeu.getListeBouletCanon().add(new Boulet_2_canon(event.getX() , event.getY(), this.jeu.getJoueur()));
-        System.out.flush();
+        if(!this.jeu.getJoueur().estMort()){
+            this.jeu.getListeBouletCanon().add(new Boulet_2_canon(event.getX() , event.getY(), this.jeu.getJoueur()));
+            System.out.flush();
+        }
     }
 
     @Override
