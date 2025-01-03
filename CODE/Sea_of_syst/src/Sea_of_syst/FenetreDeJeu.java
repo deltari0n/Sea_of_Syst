@@ -37,9 +37,9 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener,
     private int elapsedTime; // Temps écoulé en seconde
     private int minutes ; 
     private int secondes ;
+    private String pseudo;
    
-
-    public FenetreDeJeu() { 
+    public FenetreDeJeu(String nickname, boolean estTeamBleu) { 
         // initialisation de la fenetre
         this.setSize(1200, 600);
         this.setResizable(false);
@@ -50,7 +50,22 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener,
         this.jLabel1.setPreferredSize(new java.awt.Dimension(1450, 750));
         this.setContentPane(this.jLabel1);
         this.pack();
-    
+        this.pseudo = nickname;
+        
+        // Ajout d'un écouteur pour la fermeture de la fenêtre
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                //supprimer les données de la base de données
+                jeu.getDBAJoueur().deleteJoueur(jeu.getIDJoueur());
+                if(jeu.getHoteRequin()){
+                    jeu.getDBARequin().DeleteRequin(jeu.getIDRequin());
+                }
+                // Ferme la fenêtre après la suppression
+                dispose();
+            }
+        });
+        
         // Creation du buffer pour l’affichage du jeu et recuperation du contexte graphique
         this.framebuffer = new BufferedImage(this.jLabel1.getWidth(), this.jLabel1.getHeight(), BufferedImage.TYPE_INT_ARGB);
         this.jLabel1.setIcon(new ImageIcon(framebuffer));
@@ -59,7 +74,7 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener,
         //this.setUndecorated(true);
         
         // Creation du jeu
-        this.jeu = new Jeu();
+        this.jeu = new Jeu(pseudo, estTeamBleu);
         // Creation du Timer qui appelle this.actionPerformed() tous les 40 ms
         this.timer = new Timer(40, this);
         this.timer.start();
@@ -68,14 +83,7 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener,
         this.elapsedTime = 0;
         this.minutes= 0;
         this.secondes = 0;
-        
-        
-        
-        
-        
     }
-   
-    
     
     
     
@@ -207,9 +215,9 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener,
     }
 
     
-    public static void main(String[] args) {
-        FenetreDeJeu fenetre = new FenetreDeJeu();
-        fenetre.setVisible(true);
+    public void main(String[] args) {
+//        FenetreDeJeu fenetre = new FenetreDeJeu();
+//        fenetre.setVisible(true);
     }
 
 

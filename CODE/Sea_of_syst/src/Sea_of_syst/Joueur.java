@@ -22,7 +22,7 @@ public class Joueur{
     //attributs et constructeur
     private BufferedImage sprite, coeur,coeurG ;
     private int x, y;
-    private boolean gauche, droite, gravite, saut, clique, collision, estAuSol,estMort;
+    private boolean gauche, droite, gravite, saut, clique, collision, estAuSol,estMort, estTeamBleu;
     private int n;
     private int vie ; 
     private int idJoueur;
@@ -54,7 +54,7 @@ public class Joueur{
     }
     
     //constructeur pour les autres joueurs
-    public Joueur(int id_joueur, String username, int xJ, int yJ, int niveau_vie, String avatar){
+    public Joueur(int id_joueur, String username, int xJ, int yJ, int niveau_vie, String avatar, boolean team){
         try {
             this.sprite = ImageIO.read(getClass().getResource("/ressources/Pirate_sprite.png"));
         } catch (IOException ex) {
@@ -66,11 +66,16 @@ public class Joueur{
         this.y = yJ;
         this.vie = niveau_vie;
         this.avatar = avatar;
-        
+        this.estTeamBleu = team;
     }
     
     //__________________________________________________________________________
     //guetteur et setteur
+    
+    public int getId(){
+        return this.idJoueur;
+    }
+    
     public void setGauche(boolean gauche) {
         // Le joueur ne fait rien si il est mort
         if (!estMort){ 
@@ -95,12 +100,7 @@ public class Joueur{
             this.estAuSol = sol;
         }
     }
-    /**
-    public void setBas(boolean bas) {
-        this.gravite = bas;
-    }
-     * @return 
-    **/
+
     public int getX() {
         return x;
     }

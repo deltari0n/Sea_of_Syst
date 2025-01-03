@@ -1,4 +1,4 @@
-/*
+    /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -32,29 +32,71 @@ public class Jeu {
     private DBA_Mouette dbaMouette;
     private DBA_Requin dbaRequin;
     private DBA_Boulet_2_Canon dbaBoulets;
-    private int idJoueur;
+    private int idJoueur, idRequin;
     private List<Joueur> joueurs;
+    private boolean hoteRequin = false; //Pour savoir qui génère et gère le requin et ses déplacements
+    private String pseudo;
     
     //constructeur
-    public Jeu() {
+//    public Jeu() {
+//        try {
+//            this.decor = ImageIO.read(getClass().getResource("/ressources/ocean.png"));
+//        } catch (IOException ex) {
+//            Logger.getLogger(Jeu.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        this.unJoueur = new Joueur();
+//        this.requin = new Requin(unJoueur);
+//        this.mouette = new Mouette();
+//        this.boulets = new ArrayList<>();
+//        this.map = new Map();
+//        //Initialisation des Base de données
+//            //Init joueur
+//        this.dbaJoueur = new DBA_Joueur();
+//        this.dbaJoueur.insertJoueur("val1", unJoueur.getX(), unJoueur.getY(), unJoueur.getVie(), 0, "ok");
+//        idJoueur = this.dbaJoueur.getIdJoueur("val1");
+//        System.out.println(idJoueur);
+//            //Init boulet de canon
+//        this.dbaBoulets = new DBA_Boulet_2_Canon();
+//        
+//            //init mouette
+//        this.dbaMouette = new DBA_Mouette();
+//        
+//            //init Requin
+//        this.dbaRequin = new DBA_Requin();
+//    }
+    
+    public Jeu(String username, boolean estTeamBleu) {
         try {
             this.decor = ImageIO.read(getClass().getResource("/ressources/ocean.png"));
         } catch (IOException ex) {
             Logger.getLogger(Jeu.class.getName()).log(Level.SEVERE, null, ex);
         }
+        pseudo = username;
         this.unJoueur = new Joueur();
         this.requin = new Requin(unJoueur);
         this.mouette = new Mouette();
         this.boulets = new ArrayList<>();
         this.map = new Map();
         //Initialisation des Base de données
+            //Init joueur
         this.dbaJoueur = new DBA_Joueur();
-        this.dbaJoueur.insertJoueur("val", unJoueur.getX(), unJoueur.getY(), unJoueur.getVie(), 0, "ok");
-        idJoueur = this.dbaJoueur.getIdJoueur("val");
-        System.out.println(idJoueur);
+        this.dbaJoueur.insertJoueur(pseudo, unJoueur.getX(), unJoueur.getY(), unJoueur.getVie(), 0, "ok", estTeamBleu);
+        idJoueur = this.dbaJoueur.getIdJoueur(pseudo);  
+            
+        // on va initialiser mouette et Requin, pour cela on vérifie si un mob a déjà été créé ou non
+            //init mouette
+        this.dbaMouette = new DBA_Mouette();
+        
+            //init Requin
+        this.dbaRequin = new DBA_Requin();
+        if (dbaRequin.getNombreRequin()==0){ //vérifie si aucun requin n'a déjà été créé
+            dbaRequin.InsertRequin(500, 600);
+            hoteRequin = true;
+        }
+        idRequin = dbaRequin.getPremierIdRequin();
+            //Init boulet de canon
+        this.dbaBoulets = new DBA_Boulet_2_Canon();
     }
-    
-    
     //__________________________________________________________________________
     //getteurs et setteurs
     
@@ -66,6 +108,23 @@ public class Jeu {
         return this.boulets;
     }
     
+    public DBA_Joueur getDBAJoueur(){
+        return this.dbaJoueur;
+    }
+    public DBA_Requin getDBARequin(){
+        return this.dbaRequin;
+    }
+    
+    public int getIDJoueur(){
+        return this.idJoueur;
+    }
+    public int getIDRequin(){
+        return this.idRequin;
+    }
+    
+    public boolean getHoteRequin(){
+        return hoteRequin;
+    }
     
     //__________________________________________________________________________
     //Methodes de mise à jour
@@ -81,13 +140,15 @@ public class Jeu {
 
         
         // rendu des autres Joueur
-        joueurs = dbaJoueur.getTousLesJoueursSaufUn(idJoueur);
         for (Joueur j : joueurs){
             j.rendu(contexte);
         }
         
-        this.requin.rendu(contexte);
+        //rendu du requin
+        requin.rendu(contexte);
+        
         this.mouette.rendu(contexte);
+        
         for (Boulet_2_canon boule : boulets){
             boule.rendu(contexte);
         }
@@ -100,8 +161,8 @@ public class Jeu {
     
 
     public void miseAJour() {
+        joueurs = dbaJoueur.getTousLesJoueursSaufUn(idJoueur);
         // Mise à jour de la map
-        
         if (!unJoueur.estMort()){
             //1. mises à jour de l'avatar en fonction des collisions avec la map
 
@@ -165,12 +226,20 @@ public class Jeu {
         }
         
         // 2. Mise à jour des autres éléments (objets, monstres, etc.)
-        this.requin.miseAJour();
+            //mise a jour du requin 
+        //si hote, update le requin en prenan la liste de tout les joueurs
+        if(hoteRequin){
+            this.requin.miseAJour(joueurs);
+            this.dbaRequin.UpdateRequin(idRequin, requin.getX(), requin.getY());
+        } else { //sinon on update la position du requin via la BdD
+            this.requin.setX(dbaRequin.getRequin(idRequin)[0]);
+            this.requin.setY(dbaRequin.getRequin(idRequin)[1]);
+        }
         
         this.mouette.miseAJour(tempsActuel);
         
         
-        if(unJoueur.estMort()){
+        if(!unJoueur.estMort()){
             for (int n=0; n<this.boulets.size(); n++){
                 boulets.get(n).miseAJour();
                 if (boulets.get(n).getTrajFini()){
@@ -201,11 +270,9 @@ public class Jeu {
         }
 
 
-        
-        
         //4. Envoie des données dans la base des données
-        this.dbaJoueur.updateJoueur(idJoueur, "val", unJoueur.getX(), unJoueur.getY(), unJoueur.getVie(), 0, "ok");
-
+        this.dbaJoueur.updateJoueur(idJoueur, pseudo , unJoueur.getX(), unJoueur.getY(), unJoueur.getVie(), 0, "ok");
+        this.dbaRequin.UpdateRequin(idRequin, requin.getX(), requin.getY());
     }
 
 

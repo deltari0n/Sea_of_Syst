@@ -26,12 +26,29 @@ public class DBA_Joueur {
         connexion = SingletonJDBC.getInstance().getConnection();
     }
     
+    public int getNombreDeJoueurs() {
+        String sql = "SELECT COUNT(*) AS total FROM joueur";
+        int nombreDeJoueurs = 0; // Initialisation par défaut
+
+        try (PreparedStatement requete = connexion.prepareStatement(sql);
+             ResultSet resultat = requete.executeQuery()) {
+            if (resultat.next()) {
+                nombreDeJoueurs = resultat.getInt("total"); // Récupère le résultat
+            }
+        } catch (SQLException ex) {
+            System.err.println("Erreur lors de la récupération du nombre de joueurs.");
+            ex.printStackTrace();
+        }
+
+        return nombreDeJoueurs; // Retourne le nombre de joueurs
+    }
+    
     // Select joueur
     public List<Object> getJoueur(int id_joueur) {
         List<Object> joueurData = new ArrayList<>();
         try {
             PreparedStatement requete = connexion.prepareStatement(
-                    "SELECT username, x, y, niveau_vie, score, avatar FROM joueur WHERE id_joueur = ?");
+                    "SELECT username, x, y, niveau_vie, score, avatar, team FROM joueur WHERE id_joueur = ?");
             requete.setInt(1, id_joueur);
             ResultSet resultat = requete.executeQuery();
             if (resultat.next()) {
@@ -41,6 +58,7 @@ public class DBA_Joueur {
                 joueurData.add(resultat.getInt("niveau_vie"));   // Niveau de vie
                 joueurData.add(resultat.getInt("score"));        // Score
                 joueurData.add(resultat.getString("avatar"));    // Avatar
+                joueurData.add(resultat.getString("team"));     //team
             } else {
                 joueurData.add("Impossible de trouver le joueur");
             }
@@ -54,7 +72,7 @@ public class DBA_Joueur {
     
     public List<Joueur> getTousLesJoueursSaufUn(int idJoueurExclu) {
         List<Joueur> joueurs = new ArrayList<>();
-        String sql = "SELECT id_joueur, username, x, y, niveau_vie, score, avatar FROM joueur WHERE id_joueur != ?";
+        String sql = "SELECT id_joueur, username, x, y, score, score, avatar, team FROM joueur WHERE id_joueur != ?";
 
         try {
             PreparedStatement requete = connexion.prepareStatement(sql);
@@ -71,8 +89,9 @@ public class DBA_Joueur {
                         resultat.getString("username"),
                         resultat.getInt("x"),
                         resultat.getInt("y"),
-                        resultat.getInt("niveau_vie"),
-                        resultat.getString("avatar")
+                        resultat.getInt("score"),
+                        resultat.getString("avatar"),
+                        resultat.getBoolean("team")
                     );
                     joueurs.add(joueur);  // Ajouter le joueur à la liste
                 }
@@ -115,13 +134,6 @@ public class DBA_Joueur {
 
     return idJoueur; // Retourne -1 si aucun joueur n'est trouvé
     }
-
-    
-//    public List<Joueur> getJoueurs(){
-//        return 
-//    }
-
-    
     
         // Delete Joueur 
     public void deleteJoueur(int id_joueur) {
@@ -135,15 +147,16 @@ public class DBA_Joueur {
     }
 
     // Insert Joueur 
-    public void insertJoueur(String username, double x, double y, int niveau_vie, int score, String avatar) {
+    public void insertJoueur(String username, double x, double y, int niveau_vie, int score, String avatar, boolean team) {
         try {
-            PreparedStatement requete = connexion.prepareStatement("INSERT INTO joueur (username, x, y, niveau_vie, score, avatar) VALUES (?, ?, ?, ?, ?, ? )");
+            PreparedStatement requete = connexion.prepareStatement("INSERT INTO joueur (username, x, y, niveau_vie, score, avatar, team) VALUES (?, ?, ?, ?, ?, ?, ?)");
             requete.setString(1, username);
             requete.setDouble(2, x);
             requete.setDouble(3, y);
             requete.setInt(4, niveau_vie);
             requete.setInt(5, score);
             requete.setString(6, avatar);
+            requete.setBoolean(7, team);
             requete.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -168,28 +181,7 @@ public class DBA_Joueur {
         }
     }
 
-//    public static void main(String[] args){
-//        DBA_Joueur dba = new DBA_Joueur();
-//        dba.UpdateJoeur(6,"abdelhakim 2", 10, 10, 12, 12, "avatar");
-//   
-    public static void main(String[] args) {
-        DBA_Joueur dba = new DBA_Joueur();
-        dba.updateJoueur(6, "abdelhakim 2", 10, 10, 12, 12, "avatar");
-
+    public void main(String[] args) {
     }
 
 }
-
-//     public static void main(String[] args) {
-//    // Création d'une instance de la classe DBA_Joueur
-//    DBA_Joueur dbaJoueur = new DBA_Joueur();
-//    // Appel de la méthode getJoueur pour récupérer les données du joueur avec id = 1
-//    List<Object> joueur = dbaJoueur.getJoueur(1);
-//    // Vérification du contenu de la liste et affichage
-//    if (!joueur.isEmpty() && joueur.size() > 1) {
-//        System.out.println("Données du joueur : " + joueur);
-//    } else {
-//        System.out.println(joueur.get(0)); // Message d'erreur
-//    }
-//}
-

@@ -16,15 +16,23 @@ import java.sql.SQLException;
  */
 public class DBA_Requin {
     
+    Connection connexion;
+    
+    public DBA_Requin(){
+        connexion = SingletonJDBC.getInstance().getConnection();
+    }
+    
      // Select Requin
-    public String getRequin(int id_requin){
-        Connection connexion = SingletonJDBC.getInstance().getConnection();
+    public int[] getRequin(int id_requin){
+        int[] pos = new int[2];
         try {
             PreparedStatement requete = connexion.prepareStatement("SELECT x, y FROM requin WHERE id_requin = ?");
             requete.setInt(1, id_requin);
             ResultSet resultat = requete.executeQuery();
             if (resultat.next()){
-                return resultat.getDouble(1)+ " " + resultat.getDouble(2);       
+                pos[0] = resultat.getInt(1);
+                pos[1] = resultat.getInt(2);
+                return pos;       
             }else{
             }
         } catch (SQLException ex) {
@@ -35,7 +43,6 @@ public class DBA_Requin {
     
     // Delete Requin
     public void DeleteRequin(int id_requin){
-        Connection connexion = SingletonJDBC.getInstance().getConnection();
         try {
             PreparedStatement requete = connexion.prepareStatement("DELETE FROM requin WHERE id_requin = ?");
             requete.setInt(1, id_requin);
@@ -45,13 +52,49 @@ public class DBA_Requin {
         }
     }
     
+    public int getNombreRequin() {
+        String sql = "SELECT COUNT(*) AS total FROM requin";
+        int nombreDeRequin = 0; // Initialisation par défaut
+
+        try (PreparedStatement requete = connexion.prepareStatement(sql);
+             ResultSet resultat = requete.executeQuery()) {
+            if (resultat.next()) {
+                nombreDeRequin = resultat.getInt("total"); // Récupère le résultat
+            }
+        } catch (SQLException ex) {
+            System.err.println("Erreur lors de la récupération du nombre de joueurs.");
+            ex.printStackTrace();
+        }
+
+        return nombreDeRequin; // Retourne le nombre de joueurs
+    }
+    
+    
+    //Méthode pour obtenir l'id du reuqin, on considère qu'il y'en a un seul et
+    //qu'il se situe donc sur la première ligne de la BdD
+    public int getPremierIdRequin() {
+        String sql = "SELECT id_requin FROM requin ORDER BY id_requin ASC LIMIT 1";
+        int idRequin = -1; // Valeur par défaut si aucun requin n'est trouvé
+
+        try (PreparedStatement requete = connexion.prepareStatement(sql);
+             ResultSet resultat = requete.executeQuery()) {
+            if (resultat.next()) {
+                idRequin = resultat.getInt("id_requin"); // Récupère l'ID du premier requin
+            }
+        } catch (SQLException ex) {
+            System.err.println("Erreur lors de la récupération de l'ID du premier joueur.");
+            ex.printStackTrace();
+        }
+
+        return idRequin;
+    }
+    
     // Update Requin
-      public void UpdateRequin(int id_requin, double x, double y ){
-        Connection connexion = SingletonJDBC.getInstance().getConnection();
+      public void UpdateRequin(int id_requin, int x, int y ){
         try {
             PreparedStatement requete = connexion.prepareStatement("UPDATE requin SET  x = ?" + ", y = ?  WHERE id_requin = ?");
-            requete.setDouble(1, x);
-            requete.setDouble(2, y);
+            requete.setInt(1, x);
+            requete.setInt(2, y);
             requete.setInt(3, id_requin);
             requete.executeUpdate();
         } catch (SQLException ex) {
@@ -60,12 +103,11 @@ public class DBA_Requin {
     }
   
     // Insert  Requiun
-    public void InsertRequin( double x, double y ){
-     Connection connexion = SingletonJDBC.getInstance().getConnection();
+    public void InsertRequin( int x, int y ){
      try {
          PreparedStatement requete = connexion.prepareStatement("INSERT INTO requin ( x, y) VALUES ( ?, ? )");
-         requete.setDouble(1, x);
-         requete.setDouble(2, y);
+         requete.setInt(1, x);
+         requete.setInt(2, y);
          requete.executeUpdate();
      } catch (SQLException ex) {
          ex.printStackTrace();
