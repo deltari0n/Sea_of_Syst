@@ -45,6 +45,26 @@ public class Requin extends DBA_Joueur{
         vaADroite = posCible >= x;
     }
     
+    public Requin(int posX, int posY , boolean vaDroite){
+        try {
+            this.spriteDroite = ImageIO.read(getClass().getResource("/ressources/requin_droite.png"));
+            this.spriteGauche = ImageIO.read(getClass().getResource("/ressources/requin_gauche.png"));
+        } catch (IOException ex) {
+            Logger.getLogger(Joueur.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.x = posX;
+        this.y = posY;
+        this.vaADroite = vaDroite;
+    }
+    
+    public Requin(){
+        try {
+            this.spriteDroite = ImageIO.read(getClass().getResource("/ressources/requin_droite.png"));
+            this.spriteGauche = ImageIO.read(getClass().getResource("/ressources/requin_gauche.png"));
+        } catch (IOException ex) {
+            Logger.getLogger(Joueur.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     //__________________________________________________________________________
     // Guetteur et setteur
     
@@ -66,7 +86,12 @@ public class Requin extends DBA_Joueur{
     public void setY(int posY) {
         this.y = posY;
     }
-    
+    public boolean getVaADroite(){
+        return vaADroite;
+    }
+    public void setVaADroite(boolean vaDroite){
+        vaADroite = vaDroite;
+    }
     //_________________________________________________________________________
     //MàJ et rendu
     

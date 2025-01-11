@@ -61,6 +61,9 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener,
                 if(jeu.getHoteRequin()){
                     jeu.getDBARequin().DeleteRequin(jeu.getIDRequin());
                 }
+                if(jeu.getHoteMouette()){
+                    jeu.getDBAMouette().DeleteMouette(jeu.getIDMouette());
+                }
                 // Ferme la fenêtre après la suppression
                 dispose();
             }
@@ -112,22 +115,24 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener,
     //méthodes d'implémentation du clavier
     @Override
     public void keyPressed(KeyEvent event) {
-        if (event.getKeyCode() == event.VK_RIGHT || event.getKeyCode() == 68){ //si on appuie sur d ou flèche droite pour aller à droite
-            this.jeu.getJoueur().setDroite(true);
-        }
-        if (event.getKeyCode() == event.VK_LEFT || event.getKeyCode() == 81){ //aller a gauche
-            this.jeu.getJoueur().setGauche(true);
-        }
-        if (event.getKeyCode() == event.VK_UP){ //aller en haut
-            this.jeu.getJoueur().setSaut(true);
-        }
-        /**
-        if (event.getKeyCode() == event.VK_DOWN){ //aller en bas
-            this.jeu.getJoueur().setBas(true);
-        }
-        * **/
-        if (event.getKeyCode() == 32 || event.getKeyCode() == 90){ //sauter
-            
+        if(!this.jeu.getJoueur().estMort()){
+            if (event.getKeyCode() == event.VK_RIGHT || event.getKeyCode() == 68){ //si on appuie sur d ou flèche droite pour aller à droite
+                this.jeu.getJoueur().setDroite(true);
+            }
+            if (event.getKeyCode() == event.VK_LEFT || event.getKeyCode() == 81){ //aller a gauche
+                this.jeu.getJoueur().setGauche(true);
+            }
+            if (event.getKeyCode() == event.VK_UP){ //aller en haut
+                this.jeu.getJoueur().setSaut(true);
+            }
+            /**
+            if (event.getKeyCode() == event.VK_DOWN){ //aller en bas
+                this.jeu.getJoueur().setBas(true);
+            }
+            * **/
+            if (event.getKeyCode() == 32 || event.getKeyCode() == 90){ //sauter
+
+            }
         }
     }
     
@@ -139,22 +144,24 @@ public class FenetreDeJeu extends JFrame implements ActionListener, KeyListener,
     
     @Override
     public void keyReleased(KeyEvent event) {
-         if (event.getKeyCode() == event.VK_RIGHT || event.getKeyCode() == 68){ //si on appuie sur d ou flèche droite pour aller à droite
-            this.jeu.getJoueur().setDroite(false);
-        }
-        if (event.getKeyCode() == event.VK_LEFT  || event.getKeyCode() == 81){ //aller a gauche
-            this.jeu.getJoueur().setGauche(false);
-        }
-        if (event.getKeyCode() == event.VK_UP){ //sauter
-            this.jeu.getJoueur().setSaut(false);
-        }
-        /**
-        if (event.getKeyCode() == event.VK_DOWN){ //aller a gauche
-            this.jeu.getJoueur().setBas(false);
-        }
-        **/
-        if (event.getKeyCode() == 32 || event.getKeyCode() == 90){ //sauter
-            
+        if(!this.jeu.getJoueur().estMort()){
+            if (event.getKeyCode() == event.VK_RIGHT || event.getKeyCode() == 68){ //si on appuie sur d ou flèche droite pour aller à droite
+                this.jeu.getJoueur().setDroite(false);
+            }
+            if (event.getKeyCode() == event.VK_LEFT  || event.getKeyCode() == 81){ //aller a gauche
+                this.jeu.getJoueur().setGauche(false);
+            }
+            if (event.getKeyCode() == event.VK_UP){ //sauter
+                this.jeu.getJoueur().setSaut(false);
+            }
+            /**
+            if (event.getKeyCode() == event.VK_DOWN){ //aller a gauche
+                this.jeu.getJoueur().setBas(false);
+            }
+            **/
+            if (event.getKeyCode() == 32 || event.getKeyCode() == 90){ //sauter
+
+            }
         }
     }
     

@@ -4,11 +4,14 @@
  */
 package Sea_of_syst.DBA;
 
+import Sea_of_syst.Requin;
 import java.sql.Connection;
 import Sea_of_syst.SingletonJDBC;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -23,17 +26,17 @@ public class DBA_Requin {
     }
     
      // Select Requin
-    public int[] getRequin(int id_requin){
-        int[] pos = new int[2];
+    public Requin getRequin(int id_requin){
         try {
-            PreparedStatement requete = connexion.prepareStatement("SELECT x, y FROM requin WHERE id_requin = ?");
+            PreparedStatement requete = connexion.prepareStatement("SELECT x, y, vaADroite FROM requin WHERE id_requin = ?");
             requete.setInt(1, id_requin);
             ResultSet resultat = requete.executeQuery();
             if (resultat.next()){
-                pos[0] = resultat.getInt(1);
-                pos[1] = resultat.getInt(2);
-                return pos;       
-            }else{
+                Requin babyShark = new Requin(
+                resultat.getInt("x"),
+                resultat.getInt("y"),
+                resultat.getBoolean("vaADroite"));
+                return babyShark;
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -62,7 +65,7 @@ public class DBA_Requin {
                 nombreDeRequin = resultat.getInt("total"); // Récupère le résultat
             }
         } catch (SQLException ex) {
-            System.err.println("Erreur lors de la récupération du nombre de joueurs.");
+            System.err.println("Erreur lors de la récupération du nombre de requin");
             ex.printStackTrace();
         }
 
@@ -82,7 +85,7 @@ public class DBA_Requin {
                 idRequin = resultat.getInt("id_requin"); // Récupère l'ID du premier requin
             }
         } catch (SQLException ex) {
-            System.err.println("Erreur lors de la récupération de l'ID du premier joueur.");
+            System.err.println("Erreur lors de la récupération de l'ID du requin.");
             ex.printStackTrace();
         }
 
@@ -90,12 +93,13 @@ public class DBA_Requin {
     }
     
     // Update Requin
-      public void UpdateRequin(int id_requin, int x, int y ){
+      public void UpdateRequin(int id_requin, int x, int y, boolean vaDroite){
         try {
-            PreparedStatement requete = connexion.prepareStatement("UPDATE requin SET  x = ?" + ", y = ?  WHERE id_requin = ?");
+            PreparedStatement requete = connexion.prepareStatement("UPDATE requin SET  x = ?, y = ?, vaADroite = ?  WHERE id_requin = ?");
             requete.setInt(1, x);
             requete.setInt(2, y);
-            requete.setInt(3, id_requin);
+            requete.setBoolean(3, vaDroite);
+            requete.setInt(4, id_requin);
             requete.executeUpdate();
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -103,27 +107,17 @@ public class DBA_Requin {
     }
   
     // Insert  Requiun
-    public void InsertRequin( int x, int y ){
+    public void InsertRequin( int x, int y, boolean vaDroite){
      try {
-         PreparedStatement requete = connexion.prepareStatement("INSERT INTO requin ( x, y) VALUES ( ?, ? )");
+         PreparedStatement requete = connexion.prepareStatement("INSERT INTO requin ( x, y, vaADroite) VALUES ( ?, ?, ? )");
          requete.setInt(1, x);
          requete.setInt(2, y);
+         requete.setBoolean(3, vaDroite);
          requete.executeUpdate();
      } catch (SQLException ex) {
          ex.printStackTrace();
      }
     }
-    
-//    // test  insert
-//    public static void main(String[] args){
-//         DBA_Requin rq = new DBA_Requin();
-//         rq.DeleteRequin(7,40,50);
-//    }
-    
-    // test insert
-//     public static void main(String[] args){
-//         DBA_Requin rq = new DBA_Requin();
-//         rq.DeleteRequin(6);
-//    }
+
 }
 

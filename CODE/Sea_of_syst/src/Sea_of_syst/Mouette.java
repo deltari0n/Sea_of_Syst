@@ -20,20 +20,16 @@ import java.util.Random;
 
 public class Mouette extends Entite {
 
-    protected BufferedImage spriteDroiteHaut, spriteGaucheHaut, spriteDroiteBas, spriteGaucheBas;
-    protected double x, y;
-    protected int posCibleX;
-    protected int posCibleY;
+    private BufferedImage spriteDroiteHaut, spriteGaucheHaut, spriteDroiteBas, spriteGaucheBas;
+    private double x, y;
+    private int posCibleX, posCibleY;
     private Random random;
-    private boolean vaADroite;
-    private double oscilAmplitude;
-    private double oscilVitesse;
-    private boolean oscilEnHaut;
-    private long debutJeu;
+    private boolean vaADroite,oscilEnHaut;
+    private double oscilAmplitude, oscilVitesse;
+    private long debutJeu, apparitionMouette;
     private long dureePartie = 5 * 60 * 1000;
     private boolean mouetteVisible = false;
-    private final long apparitionMouette;
-
+    
     public Mouette() {
         try {
             this.spriteDroiteHaut = ImageIO.read(getClass().getResource("/ressources/Mouette_ailes_haut_droite.png"));
@@ -43,13 +39,33 @@ public class Mouette extends Entite {
         } catch (IOException ex) {
             Logger.getLogger(Joueur.class.getName()).log(Level.SEVERE, null, ex);
         }
+        x = 500;
+        y = 50;
         this.oscilAmplitude = 20;
         this.oscilVitesse = 0.05;
         random = new Random();
         this.debutJeu = System.currentTimeMillis();
 
-        this.apparitionMouette = 2;
+        this.apparitionMouette = 50000000;
         vaADroite = posCibleX >= x;
+    }
+    
+    /**constructeur qui va etre utiliser pour créer une mouette via la BdD
+     * on utilise le chemin d'acces vers l'image pour afficher directement le bon sprite
+     */
+    public Mouette(double posX, double posY, boolean vaDroite, boolean oscillHaut) {
+        try {
+            this.spriteDroiteHaut = ImageIO.read(getClass().getResource("/ressources/Mouette_ailes_haut_droite.png"));
+            this.spriteGaucheHaut = ImageIO.read(getClass().getResource("/ressources/Mouette_ailes_haut_gauche.png"));
+            this.spriteDroiteBas = ImageIO.read(getClass().getResource("/ressources/Mouette_ailes_bas_droite.png"));
+            this.spriteGaucheBas = ImageIO.read(getClass().getResource("/ressources/Mouette_ailes_bas_gauche.png"));
+        } catch (IOException ex) {
+            Logger.getLogger(Joueur.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        x = posX;
+        y = posY;
+        vaADroite = vaDroite;
+        oscilEnHaut = oscillHaut;
     }
 
     //guetteur et setteur
@@ -102,6 +118,12 @@ public class Mouette extends Entite {
         return spriteGaucheBas.getWidth();
     }
     
+    public boolean getVaADroite(){
+        return vaADroite;
+    }
+    public boolean getOscilEnHaut(){
+        return oscilEnHaut;
+    }
     
     //__________________________________________________________________________
     //MàJ et rendu
@@ -111,10 +133,10 @@ public class Mouette extends Entite {
         if (!mouetteVisible && tempsActuel >= apparitionMouette) {
             mouetteVisible = true;
             this.x = 150;
-            this.y = 150;
+            this.y = 50;
             random = new Random();
             posCibleX = random.nextInt(1200); // trouver un moyen de lire directement la taille de la fenetre pour remplacer 1200
-            posCibleY = random.nextInt(50) + 150;
+            posCibleY = random.nextInt(50) + 50;
             vaADroite = posCibleX >= x;
         }
 
@@ -161,6 +183,7 @@ public class Mouette extends Entite {
                 contexte.drawImage(this.spriteGaucheHaut, (int) x, (int) y, null);
             }
         }
+        
     }
     
 }

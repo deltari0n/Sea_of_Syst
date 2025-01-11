@@ -23,7 +23,6 @@ public class menu_accueil extends javax.swing.JFrame {
      */
     public menu_accueil() {
         initComponents();
-        
         // Initialisation du panneau principal
         startPanel = new JPanel();
         startPanel.setLayout(new BorderLayout()); // Définir un layout, ici BorderLayout comme exemple
@@ -72,7 +71,7 @@ public class menu_accueil extends javax.swing.JFrame {
                 ButtonJoinActionPerformed(evt);
             }
         });
-        getContentPane().add(ButtonJoin, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 650, 164, 56));
+        getContentPane().add(ButtonJoin, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 460, 164, 56));
         getContentPane().add(TextFieldPseudo, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 270, 186, 31));
 
         jLabel1.setFont(font1);
@@ -81,12 +80,12 @@ public class menu_accueil extends javax.swing.JFrame {
 
         buttonGroupChooseTeam.add(RadioButtonBlue);
         RadioButtonBlue.setText("Team Blue");
-        getContentPane().add(RadioButtonBlue, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 610, -1, 30));
+        getContentPane().add(RadioButtonBlue, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 420, -1, 30));
         RadioButtonBlue.getAccessibleContext().setAccessibleDescription("");
 
         buttonGroupChooseTeam.add(RadioButtonRed);
         RadioButtonRed.setText("Team Red");
-        getContentPane().add(RadioButtonRed, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 610, -1, 30));
+        getContentPane().add(RadioButtonRed, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 420, -1, 30));
 
         LabelBackground.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ressources/background.png"))); // NOI18N
         getContentPane().add(LabelBackground, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1210, 830));

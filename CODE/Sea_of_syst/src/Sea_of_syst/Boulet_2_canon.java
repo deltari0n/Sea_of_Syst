@@ -29,7 +29,7 @@ public class Boulet_2_canon extends Entite {
     protected int indPos;
     protected boolean trajFini;
     private int largeur, hauteur;
-    
+    private int idBoulet, idJoueur;
     
     //__________________________________________________________________________
     //constructeurs
@@ -57,8 +57,24 @@ public class Boulet_2_canon extends Entite {
         this.trajFini = false;
         this.hauteur = sprite.getHeight();
         this.largeur = sprite.getWidth();
+        this.idBoulet = -1; //par défault on met une id impossible quand le boulet n'est pas encore connecté à la BdD 
+        this.idJoueur = -1;
     }
     
+    //constructeur pour récupérer un boulet de la BdD
+    public Boulet_2_canon(int idB, int xC, int yC, int idJ){
+        try {
+            this.sprite = ImageIO.read(getClass().getResource("/ressources/Boulet.png"));
+        } catch (IOException ex) {
+            Logger.getLogger(Joueur.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.x_clique = xC;
+        this.y_clique = yC;
+        this.hauteur = sprite.getHeight();
+        this.largeur = sprite.getWidth();
+        this.idBoulet = idB;
+        this.idJoueur = idJ;
+    }
     
     //__________________________________________________________________________
     //getteur & setteur
@@ -74,6 +90,20 @@ public class Boulet_2_canon extends Entite {
     }
     public void setY(int y){
         this.yB = y;
+    }
+    
+    public int getIDBoulet(){
+        return this.idBoulet;
+    }
+    public void setIDBoulet(int idBdD){
+        this.idBoulet = idBdD;
+    }
+    
+    public int getIDJoueur(){
+        return this.idJoueur;
+    }
+    public void setIDJoueur(int idBdD){
+        this.idJoueur = idBdD;
     }
     
     public int getLargeur(){
@@ -150,48 +180,9 @@ public class Boulet_2_canon extends Entite {
     //Méthodes pour générer la liste de points par lequel va passer le boulet en 
     //fonction de sa vitesse (son pas) et de sa direction
     
-    //première version avec un pas selon x (pas idéal)
-    public static ArrayList<int[]> genererPoints(double[] coeff, int xDebut, int xMax,
-            int pas, boolean cliqueADroite) {
-        ArrayList<int[]> points = new ArrayList<>();
-        double a = coeff[0];
-        double b = coeff[1];
-        double c = coeff[2];
-        
-        //Si on clique a droite du perso on parcours la traj parabolique vers les x+
-        if (cliqueADroite){
-            /**on créé une liste de position que prend le boulet de canon entre le Joueur et la coordonnées max
-            de la map pour que le boulet continue sa traj au delà du clique
-            **/
-            for (int xInd = xDebut; xInd <= xMax; xInd += pas) {
-                double y = a * xInd * xInd + b * xInd + c; //on calcul la coordonnées y grace a x
-                //on vérifie que le boulet ne sort pas de la map (boulet dans l'eau pour éviter d'afficher 
-                //pour rien, si y<0 (boulet dans le ciel) on continuer d'afficher car il va retomber
-                if(y<800){
-                    int yInd = (int) Math.round(y);        // Arrondir y pour le transformer en int
-                    points.add(new int[]{xInd, yInd});             // Ajouter le point (x, y) à la liste
-                } else{
-                    xInd = xMax;
-                }
-            }
-        } else { //Si on clique a droite du perso on parcours la traj parabolique vers les x-
-            //même chose mais jusqu'à la bordure gauche donc x=0
-            for (int xInd = xDebut; xInd >= 0; xInd -= pas) {
-                double y = a * xInd * xInd + b * xInd + c;
-                if(y<800){
-                    int yInd = (int) Math.round(y);
-                    points.add(new int[]{xInd, yInd});
-                } else{
-                    xInd = 0;
-                }
-            }
-        }
-        return points;
-    }
-    
     
     //version avec un pas absolu
-    public static ArrayList<int[]> genererPointsV2(double[] coeff, int xDebut, int xMax,
+    public static ArrayList<int[]> genererPoints(double[] coeff, int xDebut, int xMax,
             double pas, boolean cliqueADroite) {
         ArrayList<int[]> points = new ArrayList<>();
         double a = coeff[0];
@@ -266,7 +257,7 @@ public class Boulet_2_canon extends Entite {
             cliqueADroite = false;
         }
         double[] coeffPoly = creerPolynome(p1,p2,p3);
-        ArrayList<int[]> pos = genererPointsV2(coeffPoly, xJoueur, 2500, 20, 
+        ArrayList<int[]> pos = genererPoints(coeffPoly, xJoueur, 2500, 20, 
                 cliqueADroite); //ajouter lecture taille map
         return pos;
     }
